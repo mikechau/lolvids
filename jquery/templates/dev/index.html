@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>lolvids powered by jquery</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/yeti/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/jquery">lolvids-jquery</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/jquery">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="https://github.com/mikechau/lolvids">GitHub</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Other Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="active"><a href="/jquery">jquery</a></li>
+                <li><a href="/jquery-react">jquery-react</a></li>
+                <li class="divider"></li>
+                <li><a href="/react">react</a></li>
+                <li><a href="/react-router">react-router</a></li>
+                <li class="divider"></li>
+                <li><a href="/react-alt">react-alt</a></li>
+                <li><a href="/react-router-alt">react-router-alt</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" id="content">
+      <div class="col-md-12 text-center">
+        <video controls="" name="media" id="video-player">
+          <!-- <source src="https://video.xx.fbcdn.net/hvideo-xfa1/v/t42.1790-2/11092007_539760959524522_1353914081_n.mp4?efg=eyJybHIiOjY0MiwicmxhIjo1MTJ9&amp;rl=642&amp;vabr=357&amp;oh=0605a88089d4032267eea9a4964f194d&amp;oe=55956950" type="video/mp4"> -->
+        </video>
+
+        <div id="video-meta-data">
+          <ul class="list-unstyled">
+          <li><strong id="video-title">Loading...</strong> <small>(ID: <span id="video-id">...</span>)</small></li>
+            <li>posted by <a href="https://www.facebook.com/BestofVines" target="_new">Best of Vines</a></li>
+            <li><span id="video-timestamp"></span></li>
+            <li><span id="video-counter-start"></span>/<span id="video-counter-end"></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/main.js"></script>
+  </body>
+</html>
