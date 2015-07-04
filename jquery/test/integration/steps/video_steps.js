@@ -56,6 +56,17 @@ function videoSteps() {
         .windowHandleSize({ width: width, height: height })
         .call(done)
     })
+    .when(/I press the "spacebar" key/, function(done) {
+      this
+        .browser
+        .execute(function() {
+          var player = videojs('#video-player');
+          player.play();
+          return true;
+        })
+        .keys('Space')
+        .call(done);
+    })
     .then(/I see a video/, function(done) {
       var $selector = 'video#video-player_html5_api';
 
@@ -154,6 +165,18 @@ function videoSteps() {
           var roundedHeight = Math.round(height.parsed.value);
 
           expect(roundedHeight).to.be.within(roundedHeight - 1, roundedHeight + 1);
+        })
+        .call(done);
+    })
+    .then(/the video is paused/, function(done) {
+      this
+        .browser
+        .execute(function() {
+          var player = videojs('#video-player');
+          return player.paused();
+        })
+        .then(function(status) {
+          expect(status.value).to.be.true;
         })
         .call(done);
     });

@@ -6,7 +6,8 @@ var KEYS = {
     up: 38,
     right: 39,
     down: 40
-  }
+  },
+  spacebar: 32
 };
 
 window.$ = $;
@@ -89,6 +90,15 @@ $(document).ready(function() {
 
       return video;
     },
+    togglePause: function() {
+      var isPaused = this.player.paused();
+
+      if (isPaused) {
+        this.player.play();
+      } else {
+        this.player.pause();
+      }
+    },
     _updateIndex: function(amount) {
       var newIndex = this.index + amount;
       var totalVideos = this.total();
@@ -145,6 +155,9 @@ $(document).ready(function() {
           return true;
         case KEYS.arrow.left:
           LOLVIDS.previous();
+          return true;
+        case KEYS.spacebar:
+          LOLVIDS.togglePause();
           return true;
         default:
           return true;
