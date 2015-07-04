@@ -34,10 +34,8 @@ available via `npm run-script`:
     rm npm-shrinkwrap.json
   shrinkwrap:rebuild
     npm run shrinkwrap:remove && npm run package:reinstall && npm run shrinkwrap:build
-  test:watch
-    mocha --recursive --reporter spec -w --timeout 15000 --bail
-  test:watch:browser
-    mocha --recursive --reporter spec -w --timeout 15000 2>&1 --bail | report-viewer
+  test
+    ./test/integration/run.js --bail
 ```
 
 ## development
@@ -48,8 +46,6 @@ available via `npm run-script`:
 ## testing
 
 - `npm test` - run mocha test suite
-- `npm run test:watch` - run mocha tests continuously
-- `npm run test:watch:browser` - run mocha tests continuously, with inbrowser reporter
 
 ## production
 
