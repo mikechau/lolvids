@@ -47,4 +47,6 @@ Feature: Videos
     When I go to the base url
     And I see a video
     And I press the "spacebar" key
-    Then the video is paused
+    Then I see the video is paused
+    When I press the "spacebar" key
+    Then I see the video is playing

@@ -59,11 +59,6 @@ function videoSteps() {
     .when(/I press the "spacebar" key/, function(done) {
       this
         .browser
-        .execute(function() {
-          var player = videojs('#video-player');
-          player.play();
-          return true;
-        })
         .keys('Space')
         .call(done);
     })
@@ -168,7 +163,7 @@ function videoSteps() {
         })
         .call(done);
     })
-    .then(/the video is paused/, function(done) {
+    .then(/I see the video is (playing|paused)/, function(playStatus, done) {
       this
         .browser
         .execute(function() {
@@ -176,7 +171,13 @@ function videoSteps() {
           return player.paused();
         })
         .then(function(status) {
-          expect(status.value).to.be.true;
+          var value = status.value;
+
+          if (playStatus === 'playing') {
+            expect(value).to.be.false;
+          } else {
+            expect(value).to.be.true;
+          }
         })
         .call(done);
     });
