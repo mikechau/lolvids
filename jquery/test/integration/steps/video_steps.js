@@ -97,6 +97,28 @@ function videoSteps() {
           }
         }, receiveError.bind(this, $selector))
         .call(done);
+    })
+    .then(/I see I am on the last video/, function(done) {
+      var $start = '#video-counter-start';
+      var $end = '#video-counter-end';
+
+      var currentPosition;
+
+      this
+        .browser
+        .waitForText($start)
+        .getText($start)
+        .then(function(text) {
+          expect(text).to.not.be.empty;
+          currentPosition = text;
+        })
+        .waitForText($end)
+        .getText($end)
+        .then(function(text) {
+          expect(text).to.not.be.empty;
+          expect(text).to.equal(currentPosition);
+        })
+        .call(done);
     });
 };
 

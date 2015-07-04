@@ -29,8 +29,9 @@ $(document).ready(function() {
       this.player = videojs('video-player', {
         height: 'auto',
         width: 'auto',
-        preload: 'true',
-        autoplay: 'true'
+        preload: 'auto',
+        autoplay: true,
+        controls: true
       });
 
       var resizePlayer = this._resizeVjsPlayer.bind(this);
@@ -39,6 +40,10 @@ $(document).ready(function() {
 
       this.player.on('play', function() {
         this._updateVideoMetaDataUI();
+      }.bind(this));
+
+      this.player.on('error', function() {
+        this.next();
       }.bind(this));
 
       window.onresize = resizePlayer;
@@ -50,7 +55,7 @@ $(document).ready(function() {
 
       return {
         index: this.index + 1,
-        total: this.length() + 1,
+        total: this.length(),
         title: video.name,
         id: video.id,
         timestamp: video.ts
@@ -59,8 +64,20 @@ $(document).ready(function() {
     video: function() {
       return this.data[this.index];
     },
+    total: function() {
+      return this.data.length - 1;
+    },
     length: function() {
       return this.data.length;
+    },
+    previous: function() {
+      this._updateIndex(-1);
+
+      var video = this.video();
+
+      this.player.src(video.source);
+
+      return video;
     },
     next: function() {
       this._updateIndex(1);
@@ -73,16 +90,16 @@ $(document).ready(function() {
     },
     _updateIndex: function(amount) {
       var newIndex = this.index + amount;
-      var length = this.length();
+      var totalVideos = this.total();
 
-      if (newIndex > length) {
+      if (newIndex > totalVideos) {
         this.index = 0;
 
         return this.index;
       }
 
       if (newIndex < 0) {
-        this.index = length;
+        this.index = totalVideos;
 
         return this.index;
       }
@@ -124,6 +141,9 @@ $(document).ready(function() {
       switch (keyCode) {
         case KEYS.arrow.right:
           LOLVIDS.next();
+          return true;
+        case KEYS.arrow.left:
+          LOLVIDS.previous();
           return true;
         default:
           return true;

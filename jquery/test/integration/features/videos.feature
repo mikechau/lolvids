@@ -23,7 +23,7 @@ Feature: Videos
     When I press the "left" arrow key
     Then I see I am on the last video
     When I press the "right" arrow key
-    Then I see I am on the first video
+    Then I see the "video counter start" is 1
     When I click next
     Then I see the video counter at "2"
     When I click previous
@@ -31,7 +31,7 @@ Feature: Videos
     When I click previous
     Then I see I am on the last video
     When I click the next video
-    Then I see I am on the first video
+    Then I see the "video counter start" is 1
 
   Scenario: Autoplaying video
     Given I am a user
