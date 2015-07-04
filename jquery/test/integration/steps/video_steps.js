@@ -35,29 +35,54 @@ function videoSteps() {
         .getTagName($selector)
         .then(function(tagName) {
           expect(tagName).to.equal('video');
-        }, receiveError.bind($selector))
+        }, receiveError.bind(this, $selector))
         .call(done);
     })
-    .then(/I see the video counter at "$string"/, function(count, done) {
-      var $selector = '#video-counter-start';
+    .then(/the video has a source/, function(done) {
+      var $selector = '#video-player';
+
+      this.browser
+        .getAttribute($selector, 'source')
+        .then(function(attr) {
+          expect(attr).to.exist;
+          expect(attr).to.not.be.empty;
+        })
+        .call(done);
+    })
+    .then(/I see the "$string" is( not)? (\d+|empty|"$string")/, function(selectorId, not, expectedValue, expectedString, done) {
+      var $selector = '#' + selectorId.replace(/\s/g,'-');
 
       this.browser
         .waitForText($selector, 2500)
         .getText($selector)
         .then(function(text) {
-          expect(text).to.equal(count);
-        }, receiveError.bind($selector))
-        .call(done);
-    })
-    .then(/I see the video title/, function(done) {
-      var $selector = '#video-title';
+          if (expectedValue !== 'empty' && !expectedString) {
+            if (not) {
+              expect(text).to.not.equal(expectedValue);
+            } else {
+              expect(text).to.equal(expectedValue);
+            };
+            return true;
+          }
 
-      this.browser
-        .waitForText($selector, 2500)
-        .getText($selector)
-        .then(function(text) {
-          expect(text).to.not.equal('');
-        }, receiveError.bind($selector))
+          if (expectedValue === 'empty' && !expectedString) {
+            if (not) {
+              expect(text).to.not.equal('');
+            } else {
+              expect(text).to.equal('');
+            }
+            return true;
+          }
+
+          if (expectedString) {
+            if (not) {
+              expect(text).to.not.equal(expectedString);
+            } else {
+              expect(text).to.equal(expectedString);
+            }
+            return true;
+          }
+        }, receiveError.bind(this, $selector))
         .call(done);
     });
 };

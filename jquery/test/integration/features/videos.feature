@@ -4,10 +4,12 @@ Feature: Videos
     Given I am a user
     When I go to the base url
     Then I see a video
-    And I see the video counter at "1"
-    And I see the video title
-    And I see the video id
-    And I see the video timestamp
+    And the video has a source
+    And I see the "video counter start" is 1
+    And I see the "video-counter-end" is not 0
+    And I see the "video title" is not "Loading..."
+    And I see the "video id" is not "..."
+    And I see the "video timestamp" is not empty
 
   Scenario: Swiping between videos (keyboard)
     Given I am a user

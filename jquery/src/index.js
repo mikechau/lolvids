@@ -1,18 +1,21 @@
 var $ = require('jquery');
 window.$ = $;
 window.jQuery = $;
-window.VIDEOS = [];
 
 require('bootstrap');
 
 $(document).ready(function() {
-  var video;
+  var VIDEOS;
+  var initialVideo;
 
   $.getJSON('http://jetclips.herokuapp.com/api/v1/videos/170901143077174', function(data) {
-    window.VIDEOS = data;
-    video = data[0];
+    VIDEOS = data;
+    initialVideo = data[0] || {};
 
     $('#video-counter-start').text(1);
-    // $('#video-counter-end').text(data.length);
+    $('#video-counter-end').text(data.length);
+    $('#video-title').text(initialVideo.name);
+    $('#video-id').text(initialVideo.id);
+    $('#video-timestamp').text(initialVideo.ts);
   });
 });
