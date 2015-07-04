@@ -1,4 +1,10 @@
-# react-webpack-es6-boilerplate
+# lolvids jquery
+
+## setup
+
+```
+npm install
+```
 
 ## commands
 

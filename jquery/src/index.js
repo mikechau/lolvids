@@ -1,5 +1,8 @@
 var $ = require('jquery');
-var videojs = require('video.js');
+var App = require('./app');
+var VIDEOS_URL = 'http://jetclips.herokuapp.com/api/v1/videos/170901143077174';
+
+// Map key codes.
 var KEYS = {
   arrow: {
     left: 37,
@@ -10,166 +13,59 @@ var KEYS = {
   spacebar: 32
 };
 
+// Export jQuery to make it available to window.
 window.$ = $;
 window.jQuery = $;
 
+// Include bootstrap javascript.
 require('bootstrap');
+
+// Include stylesheets.
 require('video.js/dist/video-js/video-js.css');
 require('./styles.css');
 
-function noop() {}
-
+// Wait for DOM to be ready.
 $(document).ready(function() {
-  var LOLVIDS = {
-    data: [{}],
-    index: 0,
-    player: { src: noop },
-    init: function(options) {
-      this.data = options.data;
-      this.index = 0;
+  // Fetch VIDEOS.
+  $.getJSON(VIDEOS_URL, function(data) {
+    // Feed JSON into App.
+    App.init({ data: data });
 
-      this.player = videojs('video-player', {
-        height: 'auto',
-        width: 'auto',
-        preload: 'auto',
-        autoplay: true,
-        controls: true
-      });
-
-      var resizePlayer = this._resizeVjsPlayer.bind(this);
-
-      this.player.ready(resizePlayer);
-
-      this.player.on('play', function() {
-        this._updateVideoMetaDataUI();
-      }.bind(this));
-
-      this.player.on('error', function() {
-        this.next();
-      }.bind(this));
-
-      window.onresize = resizePlayer;
-
-      this.player.src(options.data[0].source);
-    },
-    serialize: function() {
-      var video = this.video();
-
-      return {
-        index: this.index + 1,
-        total: this.length(),
-        title: video.name,
-        id: video.id,
-        timestamp: video.ts
-      };
-    },
-    video: function() {
-      return this.data[this.index];
-    },
-    total: function() {
-      return this.data.length - 1;
-    },
-    length: function() {
-      return this.data.length;
-    },
-    previous: function() {
-      this._updateIndex(-1);
-
-      var video = this.video();
-
-      this.player.src(video.source);
-
-      return video;
-    },
-    next: function() {
-      this._updateIndex(1);
-
-      var video = this.video();
-
-      this.player.src(video.source);
-
-      return video;
-    },
-    togglePause: function() {
-      var isPaused = this.player.paused();
-
-      if (isPaused) {
-        this.player.play();
-      } else {
-        this.player.pause();
-      }
-    },
-    _updateIndex: function(amount) {
-      var newIndex = this.index + amount;
-      var totalVideos = this.total();
-
-      if (newIndex > totalVideos) {
-        this.index = 0;
-
-        return this.index;
-      }
-
-      if (newIndex < 0) {
-        this.index = totalVideos;
-
-        return this.index;
-      }
-
-      this.index = newIndex;
-
-      return this.index;
-    },
-    _updateVideoMetaDataUI: function() {
-      var metadata = this.serialize();
-
-      $('#video-counter-start').text(metadata.index);
-      $('#video-counter-end').text(metadata.total);
-      $('#video-title').text(metadata.title);
-      $('#video-id').text(metadata.id);
-      $('#video-timestamp').text(metadata.timestamp);
-    },
-    _resizeVjsPlayer: function() {
-      var player = this.player;
-      var aspectRatio = 10 / 21;
-      var vWidth = document.getElementById(player.id()).parentElement.offsetWidth;
-      var vHeight = vWidth * aspectRatio;
-      var winHeight = window.innerHeight;
-
-      if (winHeight < vHeight) {
-        vHeight = winHeight - 80;
-      }
-
-      player.width(vWidth - 30).height(vHeight);
-    }
-  };
-
-  $.getJSON('http://jetclips.herokuapp.com/api/v1/videos/170901143077174', function(data) {
-    LOLVIDS.init({ data: data });
-
+    // Set up event listeners for key presses (right/left/spacebar).
     $('body').keydown(function(e) {
       var keyCode = e.which;
 
       switch (keyCode) {
         case KEYS.arrow.right:
-          LOLVIDS.next();
+          // Move to the next video.
+          App.next();
           return true;
         case KEYS.arrow.left:
-          LOLVIDS.previous();
+          // Move to the previous video.
+          App.previous();
           return true;
         case KEYS.spacebar:
-          LOLVIDS.togglePause();
+          // Pause or unpause video.
+          App.togglePause();
           return true;
         default:
           return true;
       }
     });
 
+    // Set up event listeners for click events (prev/next).
     $('.js-video-action').on('click', function(e) {
+      // Capture the data attr from the event target
+      // the user could be clicking the menu icon so
+      // we need to find the closest .js-video-action
+      // class to capture the correct data attribute.
       var action = $(e.target)
         .closest('.js-video-action')
-        .attr('data-video-action');
+        .data('video-action');
 
-      LOLVIDS[action]();
+      // We call our app function, action could be
+      // 'previous' or 'next'.
+      App[action]();
     });
   });
 });
