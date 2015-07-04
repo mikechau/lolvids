@@ -45,43 +45,47 @@
     </nav>
 
     <div class="container" id="content">
-      <div class="row">
-        <div class="col-md-1">
+      <div class="row vertical-align">
+        <div id="video-previous-action" class="col-md-1 col-video-transition js-video-action" data-video-action="previous">
+          <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
         </div>
 
         <div class="col-md-10 text-center">
           <video id="video-player" class="video-js vjs-default-skin vjs-big-play-centered">
              <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
           </video>
-
-          <div id="video-meta-data" class="row">
-            <div class="col-md-4">
-            <h3>
-              <span id="video-title">Loading...</span>
-              <br>
-              <small>
-                <span id="video-timestamp"></span>
-              </small>
-            </h3>
-            </div>
-
-            <div class="col-md-4">
-              <br>
-              <ul class="list-unstyled">
-                <li>ID: <span id="video-id">...</span></li>
-                <li>Video: <span id="video-counter-start">0</span>/<span id="video-counter-end">0</span></li>
-              </ul>
-            </div>
-
-            <div class="col-md-4">
-              <h3>
-                <a href="https://www.facebook.com/BestofVines" target="_new">Best of Vines</a>
-              </h3>
-            </div>
-          </div>
         </div>
 
-        <div class="col-md-1">
+        <div id="video-next-action" class="col-md-1 col-video-transition js-video-action" data-video-action="next">
+          <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="video-meta-data">
+          <div class="col-md-3 col-md-offset-1">
+          <h3>
+            <span id="video-title">Loading...</span>
+            <br>
+            <small>
+              <span id="video-timestamp"></span>
+            </small>
+          </h3>
+          </div>
+
+          <div class="col-md-4 text-center">
+            <br>
+            <ul class="list-unstyled">
+              <li>ID: <span id="video-id">...</span></li>
+              <li>Video: <span id="video-counter-start">0</span>/<span id="video-counter-end">0</span></li>
+            </ul>
+          </div>
+
+          <div class="col-md-3">
+            <h3 class="pull-right">
+              <a href="https://www.facebook.com/BestofVines" target="_new">Best of Vines</a>
+            </h3>
+          </div>
         </div>
       </div>
     </div>

@@ -38,6 +38,15 @@ function videoSteps() {
         .keys(keyChar)
         .call(done);
     })
+    .when(/I click the "$string" video action/, function(clickAction, done) {
+      var $selector = '#video-' + clickAction + '-action';
+
+      this
+        .browser
+        .click($selector)
+        .then(null, receiveError.bind(this, $selector))
+        .call(done);
+    })
     .then(/I see a video/, function(done) {
       var $selector = 'video#video-player_html5_api';
 

@@ -14,6 +14,7 @@ window.jQuery = $;
 
 require('bootstrap');
 require('video.js/dist/video-js/video-js.css');
+require('./styles.css');
 
 function noop() {}
 
@@ -148,6 +149,14 @@ $(document).ready(function() {
         default:
           return true;
       }
+    });
+
+    $('.js-video-action').on('click', function(e) {
+      var action = $(e.target)
+        .closest('.js-video-action')
+        .attr('data-video-action');
+
+      LOLVIDS[action]();
     });
   });
 });

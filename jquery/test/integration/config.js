@@ -36,7 +36,11 @@ exports.config = {
    * desired capabilities
    */
   capabilities: {
-    browserName: 'chrome'
+    browserName: 'chrome',
+    loggingPrefs: {
+      driver: 'INFO',
+      browser: 'INFO'
+    }
   },
 
   /**
@@ -61,6 +65,6 @@ exports.config = {
    */
   mochaOpts: {
     reporter: 'spec',
-    timeout: 10000
+    timeout: 50000
   }
 };
