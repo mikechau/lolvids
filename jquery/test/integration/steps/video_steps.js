@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 function receiveError(tag, err) {
   var tag = tag || 'ERROR';
   var message = '(' + tag + ')';
@@ -28,10 +30,19 @@ function videoSteps() {
         .url(`${this.baseUrl}/${urlPath}`)
         .call(done);
     })
+    .when(/I press the "$string" arrow key/, function(keyDirection, done) {
+      var keyChar = _.capitalize(keyDirection) + ' arrow';
+
+      this
+        .browser
+        .keys(keyChar)
+        .call(done);
+    })
     .then(/I see a video/, function(done) {
-      var $selector = '#video-player';
+      var $selector = 'video#video-player_html5_api';
 
       this.browser
+        .waitForExist($selector, 2500)
         .getTagName($selector)
         .then(function(tagName) {
           expect(tagName).to.equal('video');
@@ -39,13 +50,15 @@ function videoSteps() {
         .call(done);
     })
     .then(/the video has a source/, function(done) {
-      var $selector = '#video-player';
+      var $selector = 'video#video-player_html5_api';
 
       this.browser
-        .getAttribute($selector, 'source')
-        .then(function(attr) {
-          expect(attr).to.exist;
-          expect(attr).to.not.be.empty;
+        .waitUntil(function() {
+          return this
+            .getAttribute($selector, 'src')
+            .then(function(attr) {
+              return (attr && attr !== '');
+            });
         })
         .call(done);
     })

@@ -45,18 +45,43 @@
     </nav>
 
     <div class="container" id="content">
-      <div class="col-md-12 text-center">
-        <video controls="" name="media" id="video-player">
-          <!-- <source src="https://video.xx.fbcdn.net/hvideo-xfa1/v/t42.1790-2/11092007_539760959524522_1353914081_n.mp4?efg=eyJybHIiOjY0MiwicmxhIjo1MTJ9&amp;rl=642&amp;vabr=357&amp;oh=0605a88089d4032267eea9a4964f194d&amp;oe=55956950" type="video/mp4"> -->
-        </video>
+      <div class="row">
+        <div class="col-md-1">
+        </div>
 
-        <div id="video-meta-data">
-          <ul class="list-unstyled">
-          <li><strong id="video-title">Loading...</strong> <small>(ID: <span id="video-id">...</span>)</small></li>
-            <li>posted by <a href="https://www.facebook.com/BestofVines" target="_new">Best of Vines</a></li>
-            <li><span id="video-timestamp"></span></li>
-            <li><span id="video-counter-start">0</span>/<span id="video-counter-end">0</span></li>
-          </ul>
+        <div class="col-md-10 text-center">
+          <video id="video-player" class="video-js vjs-default-skin vjs-big-play-centered">
+             <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+          </video>
+
+          <div id="video-meta-data" class="row">
+            <div class="col-md-4">
+            <h3>
+              <span id="video-title">Loading...</span>
+              <br>
+              <small>
+                <span id="video-timestamp"></span>
+              </small>
+            </h3>
+            </div>
+
+            <div class="col-md-4">
+              <br>
+              <ul class="list-unstyled">
+                <li>ID: <span id="video-id">...</span></li>
+                <li>Video: <span id="video-counter-start">0</span>/<span id="video-counter-end">0</span></li>
+              </ul>
+            </div>
+
+            <div class="col-md-4">
+              <h3>
+                <a href="https://www.facebook.com/BestofVines" target="_new">Best of Vines</a>
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-1">
         </div>
       </div>
     </div>
