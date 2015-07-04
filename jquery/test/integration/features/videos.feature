@@ -35,12 +35,12 @@ Feature: Videos
 
   Scenario: Resizing video
     Given I am a user
+    When I resize the window to "800" by "600"
     When I go to the base url
     Then I see a video
-    When I resize the window to "x" by "y"
-    Then I see the video has resized to "x" by "y"
-    When I resize the window to "x" by "y"
-    Then I see the video has resized to "x" by "y"
+    Then I see the video has resized to "594" by "297.142857142857"
+    When I resize the window to "1366" by "768"
+    Then I see the video has resized to "944" by "463.809523809524"
 
   Scenario: Pausing a video
     Given I am a user

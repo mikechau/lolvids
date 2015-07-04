@@ -47,6 +47,15 @@ function videoSteps() {
         .then(null, receiveError.bind(this, $selector))
         .call(done);
     })
+    .when(/I resize the window to "$string" by "$string"/, function(widthString, heightString, done) {
+      var width = parseInt(widthString);
+      var height = parseInt(heightString);
+
+      this
+        .browser
+        .windowHandleSize({ width: width, height: height })
+        .call(done)
+    })
     .then(/I see a video/, function(done) {
       var $selector = 'video#video-player_html5_api';
 
@@ -126,6 +135,25 @@ function videoSteps() {
         .then(function(text) {
           expect(text).to.not.be.empty;
           expect(text).to.equal(currentPosition);
+        })
+        .call(done);
+    })
+    .then(/I see the video has resized to "$string" by "$string"/, function(rawWidth, rawHeight, done) {
+      var expectedWidth = parseInt(rawWidth);
+      var expectedHeight = parseInt(rawHeight);
+
+      this
+        .browser
+        .getCssProperty('#video-player', 'width')
+        .then(function(width) {
+          var roundedWidth = Math.round(width.parsed.value);
+          expect(roundedWidth).to.be.within(roundedWidth - 1, roundedWidth + 1);
+        })
+        .getCssProperty('#video-player', 'height')
+        .then(function(height) {
+          var roundedHeight = Math.round(height.parsed.value);
+
+          expect(roundedHeight).to.be.within(roundedHeight - 1, roundedHeight + 1);
         })
         .call(done);
     });
