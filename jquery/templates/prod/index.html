@@ -16,7 +16,88 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/yeti/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-    <div id="content"></div>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/jquery">lolvids-jquery</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/jquery">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="https://github.com/mikechau/lolvids">GitHub</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Other Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="active"><a href="/jquery">jquery</a></li>
+                <li><a href="/jquery-react">jquery-react</a></li>
+                <li class="divider"></li>
+                <li><a href="/react">react</a></li>
+                <li><a href="/react-router">react-router</a></li>
+                <li class="divider"></li>
+                <li><a href="/react-alt">react-alt</a></li>
+                <li><a href="/react-router-alt">react-router-alt</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" id="content">
+      <div class="row vertical-align">
+        <div id="video-previous-action" class="col-xs-1 col-md-1 col-video-transition js-video-action" data-video-action="previous">
+          <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+        </div>
+
+        <div class="col-xs-10 col-md-10 text-center">
+          <video id="video-player" class="video-js vjs-default-skin vjs-big-play-centered">
+             <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+          </video>
+        </div>
+
+        <div id="video-next-action" class="col-xs-1 col-md-1 col-video-transition js-video-action" data-video-action="next">
+          <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="video-meta-data">
+          <div class="col-xs-12 col-sm-12 col-md-3 col-md-offset-1 text-center-xs text-center-sm">
+          <h3>
+            <span id="video-title">Loading...</span>
+            <br>
+            <small>
+              <span id="video-timestamp"></span>
+            </small>
+          </h3>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-4 text-center">
+            <br>
+            <ul class="list-unstyled">
+              <li>ID: <span id="video-id">...</span></li>
+              <li>Video: <span id="video-counter-start">0</span>/<span id="video-counter-end">0</span></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-3">
+            <h3 class="pull-right-md pull-right-lg pull-right-not-sm pull-right-not-xs text-center-xs text-center-sm">
+              <a href="https://www.facebook.com/BestofVines" target="_new">Best of Vines</a>
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
     {% for (var chunk in o.htmlWebpackPlugin.files.chunks) { %}
     <script src="{%=o.htmlWebpackPlugin.files.chunks[chunk].entry %}"></script>
     {% } %}
