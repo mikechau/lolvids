@@ -54,7 +54,7 @@ var config = _.merge(
   }),
   {
     output: {
-      publicPath: '/assets/',
+      publicPath: 'assets/',
       filename: '[name]-[hash].js'
     },
     cache: false,
