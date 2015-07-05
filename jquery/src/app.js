@@ -1,6 +1,8 @@
 var $ = require('jquery');
 var videojs = require('video.js');
 
+videojs.options.flash.swf = require('file?name=[name]-[hash].[ext]!video.js/dist/video-js/video-js.swf');
+
 function noop() {}
 
 // Set up a object literal to help us manage state.

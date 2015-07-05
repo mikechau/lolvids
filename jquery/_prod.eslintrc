@@ -3,7 +3,6 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true,
     "jquery": true
   },
   "ecmaFeatures": {
@@ -81,7 +80,7 @@
     "no-throw-literal": 2,
     "no-with": 2,
     "radix": 2,
-    "vars-on-top": 2,
+    "vars-on-top": 0,
     "wrap-iife": [2, "any"],
     "yoda": 2,
     // style

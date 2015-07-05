@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "lolvids powered by jquery",
   "scripts": {
-    "assets:build": "NODE_ENV=production webpack --config ./webpack.build.config.js --progress --profile --colors",
+    "assets:build": "NODE_ENV=production webpack --config ./webpack.build.config.js --progress --profile --colors && rm -r ./dist/* && cp -r ./build/assets ./dist/assets && cp ./build/index.html ./dist/index.html",
     "assets:serve": "NODE_ENV=development webpack-dev-server --config ./webpack.hot.assets.config.js --hot --progress --colors --port 2992 --inline --host 0.0.0.0",
     "packages:purge": "rm -rf node_modules",
     "packages:reinstall": "npm run packages:purge && npm install",
