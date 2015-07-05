@@ -1,6 +1,6 @@
 var $ = require('jquery');
 var App = require('./app');
-var VIDEOS_URL = 'http://jetclips.herokuapp.com/api/v1/videos/170901143077174';
+var VIDEOS_URL = '//jetclips.herokuapp.com/api/v1/videos/170901143077174';
 
 // Map key codes.
 var KEYS = {
