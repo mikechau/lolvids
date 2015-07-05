@@ -1,6 +1,8 @@
 var $ = require('jquery');
 var videojs = require('video.js');
 
+require('./jquery.toggleText');
+
 videojs.options.flash.swf = require('file?name=[name]-[hash].[ext]!video.js/dist/video-js/video-js.swf');
 
 function noop() {}
@@ -17,9 +19,13 @@ var App = {
   // Reference to videojs.
   player: { src: noop },
 
+  // Endless mode disabled by default.
+  endless: false,
+
   // Our initialzer, we will pass data as a option param and then bootstrap videojs.
   init: function(options) {
     this.data = options.data;
+    this.endless = options.endless;
     this.index = 0;
 
     this.player = videojs('video-player', {
@@ -32,16 +38,23 @@ var App = {
 
     // Setup videojs event listeners.
     var resizePlayer = this._resizeVjsPlayer.bind(this);
+    var nextVideo = this.next.bind(this);
 
-    this.player.ready(resizePlayer);
+    this.player.ready(function() {
+      // If we pass it elements, remove the spinner and unhide content.
+      if (options.$el) {
+        options.$el.spinner.remove();
+        options.$el.content.removeClass('hidden');
+      }
+
+      resizePlayer();
+    });
 
     this.player.on('play', function() {
       this._updateVideoMetaDataUI();
     }.bind(this));
 
-    this.player.on('error', function() {
-      this.next();
-    }.bind(this));
+    this.player.on('error', nextVideo);
 
     // Make videojs responsive by listening to the onresize event handler.
     window.onresize = resizePlayer;
@@ -118,6 +131,24 @@ var App = {
     } else {
       this.player.pause();
     }
+  },
+
+  // Switches endless between true/false.
+  // When enabled, will attach to the 'ended' event,
+  // where #next is automatically called.
+  // When disabled, will remove all 'ended' events.
+  toggleEndless: function() {
+    if (this.endless) {
+      this.player.off('ended');
+    } else {
+      this.player.on('ended', this.next.bind(this));
+
+      if (this.player.ended()) {
+        this.next();
+      }
+    }
+
+    this.endless = !this.endless;
   },
 
   // Update index function, pass it an amount to increment or decrement

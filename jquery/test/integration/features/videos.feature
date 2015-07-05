@@ -50,3 +50,18 @@ Feature: Videos
     Then I see the video is paused
     When I press the "spacebar" key
     Then I see the video is playing
+
+  Scenario: Endless Mode
+    Given I am a user
+    When I go to the base url
+    Then I see a video
+    And I see Endless Mode is "Off"
+    And I see the "video counter start" is 1
+    When I enable Endless Mode
+    Then I see Endless Mode is "On"
+    When I wait for the video to end
+    Then I see the "video counter start" is 2
+    When I disable Endless Mode
+    Then I see Endless Mode is "Off"
+    When I wait for the video to end
+    Then I see the "video counter start" is 2

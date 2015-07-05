@@ -1,4 +1,4 @@
-var $ = require('jquery');
+var $ = require('./jquery.init');
 var App = require('./app');
 var VIDEOS_URL = '//jetclips.herokuapp.com/api/v1/videos/170901143077174';
 
@@ -13,10 +13,6 @@ var KEYS = {
   spacebar: 32
 };
 
-// Export jQuery to make it available to window.
-window.$ = $;
-window.jQuery = $;
-
 // Include bootstrap javascript.
 require('bootstrap');
 
@@ -29,7 +25,7 @@ $(document).ready(function() {
   // Fetch VIDEOS.
   $.getJSON(VIDEOS_URL, function(data) {
     // Feed JSON into App.
-    App.init({ data: data });
+    App.init({ data: data, $el: { spinner: $('#spinner'), content: $('#content') } });
 
     // Set up event listeners for key presses (right/left/spacebar).
     $('body').keydown(function(e) {
@@ -66,6 +62,22 @@ $(document).ready(function() {
       // We call our app function, action could be
       // 'previous' or 'next'.
       App[action]();
+    });
+
+    // Attach event listeners for endless mode toggling.
+    // Automatically calls App#next when enabled.
+    // If endless mode off, enable it.
+    // If endless mode on, disable it.
+    $('#endless-mode-action').on('click', function(e) {
+      e.preventDefault();
+
+      App.toggleEndless();
+
+      $(e.target)
+        .parent()
+        .toggleClass('active')
+        .find('#endless-mode-status')
+        .toggleText('Off', 'On');
     });
   });
 });

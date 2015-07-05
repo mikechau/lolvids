@@ -62,6 +62,28 @@ function videoSteps() {
         .keys('Space')
         .call(done);
     })
+    .when(/I (enable|disable) Endless Mode/, function(action, done) {
+      var $selector = '#endless-mode-action';
+
+      this
+        .browser
+        .click($selector)
+        .call(done);
+    })
+    .when(/I wait for the video to end/, function(done) {
+      var $selector = '#video-player';
+
+      this
+        .browser
+        .execute(function(videoEl) {
+          var player = videojs(videoEl);
+          return player.duration();
+        }, $selector)
+        .then(function(duration) {
+          return this.pause(duration.value * 1000);
+        })
+        .call(done);
+    })
     .then(/I see a video/, function(done) {
       var $selector = 'video#video-player_html5_api';
 
@@ -178,6 +200,19 @@ function videoSteps() {
           } else {
             expect(value).to.be.true;
           }
+        })
+        .call(done);
+    })
+    .then(/I see Endless Mode is "$string"/, function(status, done) {
+      var $selector = '#endless-mode-status';
+      this
+        .browser
+        .waitUntil(function() {
+          return this
+            .getText($selector)
+            .then(function(text) {
+              return (text === status);
+            });
         })
         .call(done);
     });
