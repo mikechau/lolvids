@@ -1,12 +1,11 @@
 var React = require('react');
-
-require('./styles.less');
+var TopNavBar = require('./TopNavBar');
 
 var Application = React.createClass({
   render: function() {
     return (
       <div>
-        lolvids
+        <TopNavBar />
       </div>
     );
   }
