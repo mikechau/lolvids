@@ -9,7 +9,7 @@ function bodyClick() {
 describe('Dropdown', function() {
   jsdom();
 
-  it('render: a dropdown list item', function() {
+  it('renders: a dropdown list item element', function() {
     const component = TestUtils.renderIntoDocument(<Dropdown title="Test" />);
     const domNode = React.findDOMNode(component);
 
@@ -18,7 +18,7 @@ describe('Dropdown', function() {
   });
 
   describe('on click (component)', function() {
-    it('state: open to "true" and then "false"', function() {
+    it('state toggles: open to "true" and then to "false"', function() {
       const component = TestUtils.renderIntoDocument(<Dropdown title="Test" />);
       const dropdownLink = TestUtils.findRenderedDOMComponentWithTag(component, 'a');
 
@@ -29,7 +29,7 @@ describe('Dropdown', function() {
       expect(component.state.open).to.be.false;
     });
 
-    it('render: toggles open class', function() {
+    it('render toggles: open class', function() {
       const component = TestUtils.renderIntoDocument(<Dropdown title="Test" />);
       const domNode = React.findDOMNode(component);
       const dropdownLink = TestUtils.findRenderedDOMComponentWithTag(component, 'a');
@@ -43,7 +43,7 @@ describe('Dropdown', function() {
   });
 
   describe('on click (body)', function() {
-    it('state: open to "false" when "true"', function() {
+    it('state updates: open to "false" when "true"', function() {
       const component = TestUtils.renderIntoDocument(<Dropdown title="Test" />);
       const dropdownLink = TestUtils.findRenderedDOMComponentWithTag(component, 'a');
 
@@ -54,7 +54,7 @@ describe('Dropdown', function() {
       expect(component.state.open).to.be.false;
     });
 
-    it('state: open not updated when "false"', function() {
+    it('state not updated: open stays "false"', function() {
       const component = TestUtils.renderIntoDocument(<Dropdown title="Test" />);
       const dropdownLink = TestUtils.findRenderedDOMComponentWithTag(component, 'a');
 
@@ -62,7 +62,7 @@ describe('Dropdown', function() {
       expect(component.state.open).to.be.false;
     });
 
-    it('render: removes open class', function() {
+    it('renders: no open class', function() {
       const component = TestUtils.renderIntoDocument(<Dropdown title="Test" />);
       const domNode = React.findDOMNode(component);
       const dropdownLink = TestUtils.findRenderedDOMComponentWithTag(component, 'a');
