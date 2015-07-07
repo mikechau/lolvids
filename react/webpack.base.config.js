@@ -26,6 +26,12 @@ module.exports = function(customConfig) {
     scssLoader = ExtractTextPlugin.extract('style-loader', 'css!sass');
   }
 
+  if (customConfig.test) {
+    cssLoader = 'null';
+    lessLoader = 'null';
+    scssLoader = 'null';
+  }
+
   var plugins = [
     new webpack.DefinePlugin({
       'process.env': {
