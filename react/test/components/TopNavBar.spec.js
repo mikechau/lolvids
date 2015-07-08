@@ -1,12 +1,12 @@
 import TopNavBar from '../../src/components/TopNavBar';
 
 describe('TopNavBar', function() {
-  jsdom();
-
   it('renders: a nav element', function() {
-    const component = TestUtils.renderIntoDocument(<TopNavBar />);
-    const domNode = React.findDOMNode(component);
+    const shallowRenderer = TestUtils.createRenderer();
+    shallowRenderer.render(<TopNavBar />);
 
-    expect(domNode.nodeName).to.equal('NAV');
+    const component = shallowRenderer.getRenderOutput();
+    expect(component.type).to.equal('nav');
+    expect(component.props.className).to.equal('navbar navbar-default navbar-static-top');
   });
 });
