@@ -27,7 +27,6 @@ var config = _.merge(
       new webpack.optimize.OccurenceOrderPlugin(),
       new webpack.optimize.AggressiveMergingPlugin(),
       new ExtractTextPlugin('[name]-[hash].css'),
-      new webpack.NoErrorsPlugin(),
       new HtmlWebpackPlugin({
         title: 'My React Application',
         description: 'Sample React Application',
