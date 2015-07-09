@@ -1,17 +1,11 @@
 # lolvids-react
 
-## setup
-
-```
-npm install
-```
-
 ## commands
 
 ```
-Lifecycle scripts included in react-webpack-es6-boilerplate:
+Lifecycle scripts included in lolvids-react:
   test
-    mocha --recursive --reporter spec --timeout 15000 --bail
+    npm run karma
 
 available via `npm run-script`:
   assets:build
@@ -34,10 +28,16 @@ available via `npm run-script`:
     rm npm-shrinkwrap.json
   shrinkwrap:rebuild
     npm run shrinkwrap:remove && npm run package:reinstall && npm run shrinkwrap:build
-  test:watch
-    mocha --recursive --reporter spec -w --timeout 15000 --bail
-  test:watch:browser
-    mocha --recursive --reporter spec -w --timeout 15000 2>&1 --bail | report-viewer
+  spec
+    mocha ./test/**/*.spec.js --reporter spec --timeout 15000 --bail --require ./test/_lib/bootstrap.js
+  spec:watch
+    mocha ./test/**/*.spec.js --reporter spec -w --timeout 15000 --bail --require ./test/_lib/bootstrap.js
+  spec:watch:browser
+    mocha ./test/**/*.spec.js --reporter spec -w --timeout 15000 2>&1 --bail --require ./test/_lib/bootstrap.js | report-viewer
+  karma
+    karma start
+  karma:watch
+    karma start --auto-watch --no-single-run
 ```
 
 ## development
@@ -47,9 +47,26 @@ available via `npm run-script`:
 
 ## testing
 
-- `npm test` - run mocha test suite
-- `npm run test:watch` - run mocha tests continuously
-- `npm run test:watch:browser` - run mocha tests continuously, with inbrowser reporter
+Support for running tests in **mocha** and via **karma**.
+
+Update `test`, to run whatever test suite you prefer. By default it will run `karma`.
+
+### mocha
+
+Note: watching may not work properly due to `babel/register` being used as the transpilier in `bootstrap.js` and because of node caching `require`.
+
+Looks for files ending with `*.spec.js`, bootstraped via `test/_lib/bootstrap.js` (sets up globals).
+
+- `npm run spec` - run mocha tests
+- `npm run spec:watch` - run mocha tests continuously, watches for updates
+- `npm run spec:watch:browser` - run mocha tests continuously, watches for updates, with inbrowser reporter
+
+### karma
+
+Run the test by default inside `PhantomJS`, could be configured to also run in `Chrome` and `Firefox`.
+
+- `npm run karma` - run karma
+- `npm run karma:watch` - run karma continuously, watches for updates
 
 ## production
 
