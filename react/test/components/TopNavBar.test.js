@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactTestUtils from 'react/lib/ReactTestUtils';
-import TopNavBar from '../../src/components/TopNavBar';
+import TopNavBar from 'app/components/TopNavBar';
 
 describe('TopNavBar', function() {
   it('renders: a nav element', function() {

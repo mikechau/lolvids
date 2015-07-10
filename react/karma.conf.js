@@ -12,16 +12,17 @@ module.exports = function karmaConfig(config) {
     ],
 
     reporters: [
-      'spec'
+      'mocha'
     ],
 
     files: [
       'node_modules/phantomjs-polyfill/bind-polyfill.js',
-      'test/**/*.test.*'
+      'test/_lib/phantomjs-click-polyfill.js',
+      'test/_lib/browser-tests.index.js'
     ],
 
     preprocessors: {
-      'test/**/*.test.*': ['webpack', 'sourcemap']
+      'test/_lib/browser-tests.index.js': ['webpack', 'sourcemap']
     },
 
     browsers: [
@@ -40,6 +41,21 @@ module.exports = function karmaConfig(config) {
         modules: false,
         hash: false
       }
+    },
+
+    colors: true,
+    captureTimeout: 60000,
+    browserNoActivityTimeout: 45000,
+
+    customLaunchers: {
+      PhantomJS_debug: {
+        base: 'PhantomJS',
+        debug: true
+      }
+    },
+
+    phantomjsLauncher: {
+      exitOnResourceError: true
     }
   })
 }

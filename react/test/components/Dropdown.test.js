@@ -1,0 +1,74 @@
+import React from 'react';
+import ReactTestUtils from 'react/lib/ReactTestUtils';
+import Dropdown from 'app/components/Dropdown';
+
+describe('Dropdown', function() {
+  it('renders: a dropdown list item element', function() {
+    var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
+    var domNode = React.findDOMNode(component);
+
+    expect(domNode.nodeName).to.equal('LI');
+    expect(domNode.getAttribute('class')).to.equal('dropdown-toggle');
+  });
+
+  describe('on click (component)', function() {
+    it('state toggles: open to "true" and then to "false"', function() {
+      var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
+      // var dropdownLink = ReactTestUtils.findRenderedDOMComponentWithTag(component, 'a');
+      var dropdownLink = React.findDOMNode(component).querySelector('a');
+
+      ReactTestUtils.Simulate.click(dropdownLink);
+      expect(component.state.open).to.be.true;
+
+      ReactTestUtils.Simulate.click(dropdownLink);
+      expect(component.state.open).to.be.false;
+    });
+
+    it('render toggles: open class', function() {
+      var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
+      var domNode = React.findDOMNode(component);
+      // var dropdownLink = ReactTestUtils.findRenderedDOMComponentWithTag(component, 'a');
+      var dropdownLink = domNode.querySelector('a');
+
+      console.log('halt');
+
+      ReactTestUtils.Simulate.click(dropdownLink);
+      expect(domNode.getAttribute('class')).to.equal('dropdown-toggle open');
+
+      ReactTestUtils.Simulate.click(dropdownLink);
+      expect(domNode.getAttribute('class')).to.equal('dropdown-toggle');
+    });
+  });
+
+  describe('on click (body)', function() {
+    it('state updates: open to "false" when "true"', function() {
+      var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
+      var dropdownLink = ReactTestUtils.findRenderedDOMComponentWithTag(component, 'a');
+
+      ReactTestUtils.Simulate.click(dropdownLink);
+      expect(component.state.open).to.be.true;
+
+      document.body.click();
+      expect(component.state.open).to.be.false;
+    });
+
+    it('state not updated: open stays "false"', function() {
+      var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
+
+      document.body.click();
+      expect(component.state.open).to.be.false;
+    });
+
+    it('renders: no open class', function() {
+      var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
+      var domNode = React.findDOMNode(component);
+      var dropdownLink = ReactTestUtils.findRenderedDOMComponentWithTag(component, 'a');
+
+      ReactTestUtils.Simulate.click(dropdownLink);
+      expect(domNode.getAttribute('class')).to.equal('dropdown-toggle open');
+
+      document.body.click();
+      expect(domNode.getAttribute('class')).to.equal('dropdown-toggle');
+    });
+  });
+});
