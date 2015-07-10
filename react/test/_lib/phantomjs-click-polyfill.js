@@ -1,5 +1,3 @@
-console.log(HTMLElement.prototype.click);
-
 if (!HTMLElement.prototype.click) {
   HTMLElement.prototype.click = function() {
     var ev = document.createEvent('MouseEvent');

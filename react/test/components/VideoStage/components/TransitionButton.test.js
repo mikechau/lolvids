@@ -3,7 +3,7 @@ import ReactTestUtils from 'react/lib/ReactTestUtils';
 import TransitionButton from 'app/components/VideoStage/components/TransitionButton';
 
 describe('VideoStage: TransitionButton', function() {
-  it('renders: a div', function() {
+  it('renders: a div with class "col-video-transition"', function() {
     var shallowRenderer = ReactTestUtils.createRenderer();
     shallowRenderer.render(<TransitionButton right />);
 
@@ -21,7 +21,7 @@ describe('VideoStage: TransitionButton', function() {
     expect(component.props.children.props.className).to.equal('glyphicon glyphicon-menu-right');
   });
 
-  it('renders a left video transition button', function() {
+  it('renders: a left video transition button', function() {
     var shallowRenderer = ReactTestUtils.createRenderer();
     shallowRenderer.render(<TransitionButton left />);
 
