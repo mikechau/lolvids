@@ -4,10 +4,10 @@ import TopNavBar from 'app/components/TopNavBar';
 
 describe('TopNavBar', function() {
   it('renders: a nav element', function() {
-    const shallowRenderer = ReactTestUtils.createRenderer();
+    var shallowRenderer = ReactTestUtils.createRenderer();
     shallowRenderer.render(<TopNavBar />);
 
-    const component = shallowRenderer.getRenderOutput();
+    var component = shallowRenderer.getRenderOutput();
     expect(component.type).to.equal('nav');
     expect(component.props.className).to.equal('navbar navbar-default navbar-static-top');
   });

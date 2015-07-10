@@ -14,7 +14,6 @@ describe('Dropdown', function() {
   describe('on click (component)', function() {
     it('state toggles: open to "true" and then to "false"', function() {
       var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
-      // var dropdownLink = ReactTestUtils.findRenderedDOMComponentWithTag(component, 'a');
       var dropdownLink = React.findDOMNode(component).querySelector('a');
 
       ReactTestUtils.Simulate.click(dropdownLink);
@@ -27,10 +26,7 @@ describe('Dropdown', function() {
     it('render toggles: open class', function() {
       var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
       var domNode = React.findDOMNode(component);
-      // var dropdownLink = ReactTestUtils.findRenderedDOMComponentWithTag(component, 'a');
       var dropdownLink = domNode.querySelector('a');
-
-      console.log('halt');
 
       ReactTestUtils.Simulate.click(dropdownLink);
       expect(domNode.getAttribute('class')).to.equal('dropdown-toggle open');
@@ -43,7 +39,7 @@ describe('Dropdown', function() {
   describe('on click (body)', function() {
     it('state updates: open to "false" when "true"', function() {
       var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
-      var dropdownLink = ReactTestUtils.findRenderedDOMComponentWithTag(component, 'a');
+      var dropdownLink = React.findDOMNode(component).querySelector('a');
 
       ReactTestUtils.Simulate.click(dropdownLink);
       expect(component.state.open).to.be.true;
@@ -62,7 +58,7 @@ describe('Dropdown', function() {
     it('renders: no open class', function() {
       var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
       var domNode = React.findDOMNode(component);
-      var dropdownLink = ReactTestUtils.findRenderedDOMComponentWithTag(component, 'a');
+      var dropdownLink = domNode.querySelector('a');
 
       ReactTestUtils.Simulate.click(dropdownLink);
       expect(domNode.getAttribute('class')).to.equal('dropdown-toggle open');
