@@ -8,6 +8,7 @@
     "karma": "karma start",
     "karma:watch": "npm run karma -- --auto-watch --no-single-run",
     "karma:all": "npm run karma -- --browsers=PhantomJS,Chrome,Firefox",
+    "karma:server": "npm run karma -- --browsers=PhantomJS",
     "package:purge": "rm -rf node_modules",
     "package:reinstall": "npm run package:purge && npm install",
     "package:updates": "npm-check-updates -f '/^(?!npm-shrinkwrap|jsdom).*$/'",
