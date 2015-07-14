@@ -16,7 +16,8 @@
     "modules": false
   },
   "globals": {
-    "expect": true
+    "expect": true,
+    "sinon": true
   },
   "rules": {
     /* airbnb javascript style guide rules */
