@@ -56,6 +56,14 @@ module.exports = function karmaConfig(config) {
 
     phantomjsLauncher: {
       exitOnResourceError: true
+    },
+
+    client: {
+      chai: {
+        includeStack: true,
+        showDiff: true,
+        truncateThreshold: 0
+      }
     }
-  })
+  });
 }

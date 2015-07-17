@@ -8,12 +8,19 @@ var DEFAULT_WIDTH = 600;
 var DEFAULT_ASPECT_RATIO = (9 / 16);
 var DEFAULT_ADJUSTED_SIZE = 0;
 var DEFAULT_RESIZE_DEBOUNCE_TIME = 500;
+var DEFAULT_VIDEO_OPTIONS = {
+  preload: 'auto',
+  autoplay: true,
+  controls: true
+};
 
 function noop() {}
 
 var Video = React.createClass({
   propTypes: {
     src: React.PropTypes.string.isRequired,
+    height: React.PropTypes.number,
+    width: React.PropTypes.number,
     pause: React.PropTypes.bool,
     endless: React.PropTypes.bool,
     options: React.PropTypes.object,
@@ -28,7 +35,7 @@ var Video = React.createClass({
     }),
     vjsDefaultSkin: React.PropTypes.bool,
     vjsBigPlayCentered: React.PropTypes.bool,
-    warningComponent: React.PropTypes.element,
+    children: React.PropTypes.element,
     dispose: React.PropTypes.bool,
     onNextVideo: React.PropTypes.func
   },
@@ -37,11 +44,7 @@ var Video = React.createClass({
     return {
       pause: false,
       endless: false,
-      options: {
-        preload: 'auto',
-        autoplay: true,
-        controls: true
-      },
+      options: DEFAULT_VIDEO_OPTIONS,
       onReady: noop,
       eventListeners: {},
       resize: false,
@@ -61,12 +64,10 @@ var Video = React.createClass({
     var willBePaused = nextProps.pause;
 
     if (isPaused !== willBePaused) {
-      var player = this._player;
-
       if (willBePaused) {
-        player.pause();
+        this.pauseVideo();
       } else {
-        player.play();
+        this.playVideo();
       }
     }
 
@@ -101,15 +102,20 @@ var Video = React.createClass({
     this.unmountVideoPlayer();
   },
 
+  getVideoPlayer: function() {
+    return this._player;
+  },
+
   getVideoPlayerEl: function() {
     return React.findDOMNode(this.refs.videoPlayer);
   },
 
   getVideoPlayerOptions: function() {
-    return _.defaults({}, this.props.options, {
-      height: this.props.resize ? 'auto' : (this.props.options.height || DEFAULT_HEIGHT),
-      width: this.props.resize ? 'auto' : (this.props.options.width || DEFAULT_WIDTH)
-    });
+    return _.defaults(
+      {}, this.props.options, {
+      height: this.props.resize ? 'auto' : (this.props.height || DEFAULT_HEIGHT),
+      width: this.props.resize ? 'auto' : (this.props.width || DEFAULT_WIDTH)
+    }, DEFAULT_VIDEO_OPTIONS);
   },
 
   getVideoResizeOptions: function() {
@@ -119,6 +125,29 @@ var Video = React.createClass({
       defaultVideoWidthAdjustment: DEFAULT_ADJUSTED_SIZE,
       debounceTime: DEFAULT_RESIZE_DEBOUNCE_TIME
     });
+  },
+
+  getResizedVideoPlayerMeasurements: function() {
+    var resizeOptions = this.getVideoResizeOptions();
+    var aspectRatio = resizeOptions.aspectRatio;
+    var defaultVideoWidthAdjustment = resizeOptions.defaultVideoWidthAdjustment;
+
+    var winHeight = this._windowHeight();
+
+    var baseWidth = this._videoElementWidth();
+
+    var vidWidth = baseWidth - defaultVideoWidthAdjustment;
+    var vidHeight = vidWidth * aspectRatio;
+
+    if (winHeight < vidHeight) {
+      var shortWindowVideoHeightAdjustment = resizeOptions.shortWindowVideoHeightAdjustment;
+      vidHeight = winHeight - shortWindowVideoHeightAdjustment;
+    }
+
+    return {
+      width: vidWidth,
+      height: vidHeight
+    };
   },
 
   mountVideoPlayer: function() {
@@ -136,15 +165,18 @@ var Video = React.createClass({
     });
 
     player.src(src);
+
+    if (this.props.pause) {
+      this.pauseVideo();
+    }
+
+    if (this.props.endless) {
+      this.addEndlessMode();
+    }
   },
 
   unmountVideoPlayer: function() {
     this.removeResizeEventListener();
-    // _.forEach(this.props.eventListeners, function(val, key) {
-    //   this._player.off(key);
-    // });
-
-    this._player.off();
     this._player.dispose();
   },
 
@@ -175,6 +207,14 @@ var Video = React.createClass({
     window.removeEventListener('resize', this._handleVideoPlayerResize);
   },
 
+  pauseVideo: function() {
+    this._player.pause();
+  },
+
+  playVideo: function() {
+    this._player.play();
+  },
+
   handleVideoPlayerReady: function() {
     if (this.props.resize) {
       this.handleVideoPlayerResize();
@@ -186,19 +226,11 @@ var Video = React.createClass({
 
   handleVideoPlayerResize: function() {
     var player = this._player;
-    var resizeOptions = this.getVideoResizeOptions();
-    var aspectRatio = resizeOptions.aspectRatio;
-    var vWidth = this.getVideoPlayerEl().parentElement.parentElement.offsetWidth;
-    var vHeight = vWidth * aspectRatio;
-    var winHeight = window.innerHeight;
-    var defaultVideoWidthAdjustment = resizeOptions.defaultVideoWidthAdjustment;
+    var videoMeasurements = this.getResizedVideoPlayerMeasurements();
 
-    if (winHeight < vHeight) {
-      var shortWindowVideoHeightAdjustment = resizeOptions.shortWindowVideoHeightAdjustment;
-      vHeight = winHeight - shortWindowVideoHeightAdjustment;
-    }
-
-    player.width(vWidth - defaultVideoWidthAdjustment).height(vHeight);
+    player
+      .width(videoMeasurements.width)
+      .height(videoMeasurements.height);
   },
 
   handleNextVideo: function() {
@@ -212,6 +244,14 @@ var Video = React.createClass({
     );
   },
 
+  _windowHeight: function() {
+    return window.innerHeight;
+  },
+
+  _videoElementWidth: function() {
+    return this.getVideoPlayerEl().parentElement.parentElement.offsetWidth;
+  },
+
   render: function() {
     var videoPlayerClasses = cx({
       'video-js': true,
@@ -221,7 +261,7 @@ var Video = React.createClass({
 
     return (
       <video ref="videoPlayer" className={videoPlayerClasses}>
-        {this.props.warningComponent || this.renderDefaultWarning()}
+        {this.props.children || this.renderDefaultWarning()}
       </video>
     );
   }

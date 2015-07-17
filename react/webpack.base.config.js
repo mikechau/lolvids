@@ -112,7 +112,7 @@ module.exports = function(customConfig) {
           loader: 'url-loader?limit=10000&name=[name]-[hash].[ext]'
         },
         {
-          test: /\.(ttf|eot)$/,
+          test: /\.(ttf|eot|mp4)$/,
           loader: 'file-loader?name=[name]-[hash].[ext]'
         },
         {
