@@ -163,5 +163,15 @@ describe('VideoStage', function() {
 
       expect(component.state.currentVideoIndex, 'it did not decrement').to.equal(0);
     });
+
+    it('#handlePause', function() {
+      var pauseSpy = sandbox.spy(VideoStage.prototype.__reactAutoBindMap, 'setTogglePause');
+
+      var component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+
+      component.handlePause(noopEvent);
+
+      expect(pauseSpy).to.be.calledOnce;
+    });
   });
 });
