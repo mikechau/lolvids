@@ -29,8 +29,8 @@ var config = _.merge(
       new ExtractTextPlugin('[name]-[hash].css'),
       new webpack.NoErrorsPlugin(),
       new HtmlWebpackPlugin({
-        title: 'My React Application',
-        description: 'Sample React Application',
+        title: 'lolvids: react',
+        description: 'lolvids react example',
         filename: '../index.html',
         minify: {
           collapseWhitespace: true
