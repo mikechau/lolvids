@@ -1,7 +1,9 @@
 var React = require('react');
 var cx = require('classnames');
 var vjs = require('video.js');
-var _ = require('lodash');
+var _forEach = require('lodash/collection/forEach');
+var _debounce = require('lodash/function/debounce');
+var _defaults = require('lodash/object/defaults');
 
 var DEFAULT_HEIGHT = 800;
 var DEFAULT_WIDTH = 600;
@@ -92,6 +94,13 @@ var Video = React.createClass({
         this.removeResizeEventListener();
       }
     }
+
+    var currentSrc = this.props.src;
+    var newSrc = nextProps.src;
+
+    if (currentSrc !== newSrc) {
+      this.setVideoPlayerSrc(newSrc);
+    }
   },
 
   shouldComponentUpdate: function() {
@@ -111,7 +120,7 @@ var Video = React.createClass({
   },
 
   getVideoPlayerOptions: function() {
-    return _.defaults(
+    return _defaults(
       {}, this.props.options, {
       height: this.props.resize ? 'auto' : (this.props.height || DEFAULT_HEIGHT),
       width: this.props.resize ? 'auto' : (this.props.width || DEFAULT_WIDTH)
@@ -119,7 +128,7 @@ var Video = React.createClass({
   },
 
   getVideoResizeOptions: function() {
-    return _.defaults({}, this.props.resizeOptions, {
+    return _defaults({}, this.props.resizeOptions, {
       aspectRatio: DEFAULT_ASPECT_RATIO,
       shortWindowVideoHeightAdjustment: DEFAULT_ADJUSTED_SIZE,
       defaultVideoWidthAdjustment: DEFAULT_ADJUSTED_SIZE,
@@ -150,6 +159,10 @@ var Video = React.createClass({
     };
   },
 
+  setVideoPlayerSrc: function(src) {
+    this._player.src(src);
+  },
+
   mountVideoPlayer: function() {
     var src = this.props.src;
     var options = this.getVideoPlayerOptions();
@@ -160,7 +173,7 @@ var Video = React.createClass({
 
     player.ready(this.handleVideoPlayerReady);
 
-    _.forEach(this.props.eventListeners, function(val, key) {
+    _forEach(this.props.eventListeners, function(val, key) {
       player.on(key, val);
     });
 
@@ -193,7 +206,7 @@ var Video = React.createClass({
   addResizeEventListener: function() {
     var debounceTime = this.getVideoResizeOptions().debounceTime;
 
-    this._handleVideoPlayerResize = _.debounce(this.handleVideoPlayerResize, debounceTime);
+    this._handleVideoPlayerResize = _debounce(this.handleVideoPlayerResize, debounceTime);
     window.addEventListener('resize', this._handleVideoPlayerResize);
   },
 
@@ -228,9 +241,7 @@ var Video = React.createClass({
     var player = this._player;
     var videoMeasurements = this.getResizedVideoPlayerMeasurements();
 
-    player
-      .width(videoMeasurements.width)
-      .height(videoMeasurements.height);
+    player.dimensions(videoMeasurements.width, videoMeasurements.height);
   },
 
   handleNextVideo: function() {
@@ -245,7 +256,8 @@ var Video = React.createClass({
   },
 
   _windowHeight: function() {
-    return window.innerHeight;
+    // return window.innerHeight;
+    return 1;
   },
 
   _videoElementWidth: function() {

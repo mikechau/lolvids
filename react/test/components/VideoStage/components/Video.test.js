@@ -9,10 +9,14 @@ describe('VideoStage: Video', function() {
   var sandbox;
 
   beforeEach(function() {
+    Video.__Rewire__('_debounce', function(func) { return func; });
+
     sandbox = sinon.sandbox.create();
   });
 
   afterEach(function() {
+    Video.__ResetDependency__('_debounce');
+
     sandbox.restore();
   });
 
@@ -102,10 +106,32 @@ describe('VideoStage: Video', function() {
     });
   });
 
-  describe('on receive props', function() {
+  describe('on will receive props', function() {
+    it('ignores: src not changing', function() {
+      var srcSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'setVideoPlayerSrc');
+
+      var component = ReactTestUtils.renderIntoDocument(
+        <Video
+          src={TEST_VIDEO}
+          pause
+        />
+      );
+
+      component.setProps({
+        src: TEST_VIDEO
+      });
+
+      expect(srcSpy).to.not.be.called;
+    });
+
     it('ignores: pause not changing', function() {
       var pauseSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'pauseVideo');
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} pause />);
+      var component = ReactTestUtils.renderIntoDocument(
+        <Video
+          src={TEST_VIDEO}
+          pause
+        />
+      );
 
       expect(component.getVideoPlayer().paused()).to.be.true;
 
@@ -148,6 +174,22 @@ describe('VideoStage: Video', function() {
       });
 
       expect(resizeSpy).to.have.been.calledOnce;
+    });
+
+    it('responds: to src change', function() {
+      var srcSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'setVideoPlayerSrc');
+      var component = ReactTestUtils.renderIntoDocument(
+        <Video
+          src={TEST_VIDEO}
+          pause
+        />
+      );
+
+      component.setProps({
+        src: TEST_VIDEO + '?q=1337'
+      });
+
+      expect(srcSpy).to.be.calledOnce;
     });
 
     it('responds: to pause change', function() {
@@ -250,7 +292,7 @@ describe('VideoStage: Video', function() {
     });
   });
 
-  describe('on resize', function() {
+  describe('on resize (window)', function() {
     it('resizes on window resize', function() {
       var resizeOptions = {
         aspectRatio: 1,
@@ -258,17 +300,35 @@ describe('VideoStage: Video', function() {
         defaultVideoWidthAdjustment: 100
       };
 
+      sandbox
+        .stub(Video.prototype.__reactAutoBindMap, '_videoElementWidth')
+          .onFirstCall().returns(800)
+          .onSecondCall().returns(400);
+
+      sandbox
+        .stub(Video.prototype.__reactAutoBindMap, '_windowHeight')
+          .onFirstCall().returns(600)
+          .onSecondCall().returns(400);
+
       var component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
+          resize
           resizeOptions={resizeOptions}
         />
       );
 
-      sandbox.stub(Video.prototype.__reactAutoBindMap, '_videoElementWidth').returns(400);
-      sandbox.stub(Video.prototype.__reactAutoBindMap, '_windowHeight').returns(400);
+      var videoDomNode = React.findDOMNode(component).parentElement;
 
+      var resizeEvent = document.createEvent('Event');
+      resizeEvent.initEvent('resize', true, true);
+      window.dispatchEvent(resizeEvent);
 
+      var videoWidth = videoDomNode.style.width;
+      var videoHeight = videoDomNode.style.height;
+
+      expect(videoWidth, 'video width did not match').to.equal('300px');
+      expect(videoHeight, 'video height did not match').to.equal('300px');
     });
   });
 
@@ -380,6 +440,15 @@ describe('VideoStage: Video', function() {
         width: 700,
         height: 500
       });
+    });
+
+    it('#setVideoPlayerSrc', function() {
+      var NEW_VIDEO = TEST_VIDEO + '?q=1337';
+      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} pause />);
+
+      component.setVideoPlayerSrc(NEW_VIDEO);
+
+      expect(component.getVideoPlayer().src()).to.contain(NEW_VIDEO);
     });
 
     it('#pauseVideo', function() {
