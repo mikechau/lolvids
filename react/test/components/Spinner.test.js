@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactTestUtils from 'react/lib/ReactTestUtils';
-import Spinner from 'app/components/Spinner';
+var React = require('react');
+var ReactTestUtils = require('react/lib/ReactTestUtils');
+var Spinner = require('app/components/Spinner');
 
 describe('Spinner', function() {
   describe('on initial render', function() {

@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactTestUtils from 'react/lib/ReactTestUtils';
-import Metadata from 'app/components/VideoStage/components/Metadata';
+var React = require('react');
+var ReactTestUtils = require('react/lib/ReactTestUtils');
+var Metadata = require('app/components/VideoStage/components/Metadata');
 
 var data = {
   title: 'I am a test',

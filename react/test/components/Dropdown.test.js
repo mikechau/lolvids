@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactTestUtils from 'react/lib/ReactTestUtils';
-import Dropdown from 'app/components/Dropdown';
+var React = require('react');
+var ReactTestUtils = require('react/lib/ReactTestUtils');
+var Dropdown = require('app/components/Dropdown');
 
 describe('Dropdown', function() {
   describe('on initial render', function() {

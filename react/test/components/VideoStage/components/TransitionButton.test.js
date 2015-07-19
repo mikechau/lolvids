@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactTestUtils from 'react/lib/ReactTestUtils';
-import TransitionButton from 'app/components/VideoStage/components/TransitionButton';
+var React = require('react');
+var ReactTestUtils = require('react/lib/ReactTestUtils');
+var TransitionButton = require('app/components/VideoStage/components/TransitionButton');
 
 describe('VideoStage: TransitionButton', function() {
   describe('on initial render', function() {

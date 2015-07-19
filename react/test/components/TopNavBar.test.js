@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactTestUtils from 'react/lib/ReactTestUtils';
-import TopNavBar from 'app/components/TopNavBar';
+var React = require('react');
+var ReactTestUtils = require('react/lib/ReactTestUtils');
+var TopNavBar = require('app/components/TopNavBar');
 
 describe('TopNavBar', function() {
   describe('on initial render', function() {
