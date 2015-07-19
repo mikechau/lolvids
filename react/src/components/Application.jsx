@@ -9,7 +9,7 @@ var Application = React.createClass({
         <TopNavBar />
 
         <div className="container">
-          <VideoStage />
+          <VideoStage videos={[require('app/assets/test.mp4'), require('app/assets/test.mp4') + '?q=292992']} />
         </div>
       </div>
     );

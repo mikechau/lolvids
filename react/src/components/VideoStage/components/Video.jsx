@@ -256,8 +256,7 @@ var Video = React.createClass({
   },
 
   _windowHeight: function() {
-    // return window.innerHeight;
-    return 1;
+    return window.innerHeight;
   },
 
   _videoElementWidth: function() {

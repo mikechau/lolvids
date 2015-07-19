@@ -1,33 +1,25 @@
 var React = require('react');
 var cx = require('classnames');
 
+var noop = function() {};
+
 var TransitionButton = React.createClass({
   propTypes: {
     direction: React.PropTypes.oneOf([
       'left',
       'right'
     ]).isRequired,
-    onClick: React.PropTypes.func,
-    movement: React.PropTypes.shape({
-      right: React.PropTypes.number.isRequired,
-      left: React.PropTypes.number.isRequired
-    })
+    onClick: React.PropTypes.func
   },
 
   getDefaultProps: function() {
     return {
-      onClick: function() {},
-      movement: {
-        right: 1,
-        left: -1
-      }
+      onClick: noop
     };
   },
 
   handleClick: function(e) {
-    var direction = this.props.direction;
-    var value = this.props.movement[direction];
-    this.props.onClick(value, e);
+    this.props.onClick(e);
   },
 
   _isRight: function() {

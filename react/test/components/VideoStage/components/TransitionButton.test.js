@@ -45,33 +45,5 @@ describe('VideoStage: TransitionButton', function() {
 
       ReactTestUtils.Simulate.click(domNode);
     });
-
-    it('returns: the movement value when moving right', function(done) {
-      var doneOp = function(movementValue, e) {
-        expect(movementValue).to.equal(1);
-        done();
-      };
-
-      var component = ReactTestUtils.renderIntoDocument(
-        <TransitionButton direction="right" onClick={doneOp} />
-      );
-      var domNode = React.findDOMNode(component);
-
-      ReactTestUtils.Simulate.click(domNode);
-    });
-
-    it('returns: the movement value when moving left', function(done) {
-      var doneOp = function(movementValue, e) {
-        expect(movementValue).to.equal(-1);
-        done();
-      };
-
-      var component = ReactTestUtils.renderIntoDocument(
-        <TransitionButton direction="left" onClick={doneOp} />
-      );
-      var domNode = React.findDOMNode(component);
-
-      ReactTestUtils.Simulate.click(domNode);
-    });
   });
 });
