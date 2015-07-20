@@ -143,25 +143,25 @@ describe('VideoStage: Video', function() {
       expect(pauseSpy).to.have.been.calledOnce;
     });
 
-    it('ignores: endless mode not changing', function() {
-      var endlessSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addEndlessMode');
+    it('ignores: endlessMode not changing', function() {
+      var endlessModeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addEndlessMode');
       var nextVideoSpy = sandbox.spy();
       var component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
-          endless
+          endlessMode
           onNextVideo={nextVideoSpy}
         />);
 
       component.getVideoPlayer().trigger('ended');
 
       component.setProps({
-        endless: true
+        endlessMode: true
       });
 
       component.getVideoPlayer().trigger('ended');
 
-      expect(endlessSpy, 'endless mode not attached once').to.have.been.calledOnce;
+      expect(endlessModeSpy, '#addEndlessMode not attached once').to.have.been.calledOnce;
       expect(nextVideoSpy, '#onNextVideo not called twice').to.have.been.calledTwice;
     });
 
@@ -204,8 +204,8 @@ describe('VideoStage: Video', function() {
       expect(component.getVideoPlayer().paused(), 'video player is not paused').to.be.true;
     });
 
-    it('responds: to endless mode change', function() {
-      var endlessSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addEndlessMode');
+    it('responds: to endlessMode change', function() {
+      var endlessModeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addEndlessMode');
       var nextVideoSpy = sandbox.spy();
       var component = ReactTestUtils.renderIntoDocument(
         <Video
@@ -218,12 +218,12 @@ describe('VideoStage: Video', function() {
       component.getVideoPlayer().play();
 
       component.setProps({
-        endless: true
+        endlessMode: true
       });
 
       component.getVideoPlayer().trigger('ended');
 
-      expect(endlessSpy).to.have.been.calledOnce;
+      expect(endlessModeSpy).to.have.been.calledOnce;
       expect(nextVideoSpy).to.have.been.calledOnce;
     });
 
@@ -250,15 +250,15 @@ describe('VideoStage: Video', function() {
       expect(component.getVideoPlayer().paused(), 'video player is not playing').to.be.false;
     });
 
-    it('toggles: endless mode', function() {
-      var endlessSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'removeEndlessMode');
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} endless />);
+    it('toggles: endlessMode', function() {
+      var endlessModeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'removeEndlessMode');
+      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} endlessMode />);
 
       component.setProps({
-        endless: false
+        endlessMode: false
       });
 
-      expect(endlessSpy).to.have.been.calledOnce;
+      expect(endlessModeSpy).to.have.been.calledOnce;
     });
 
     it('toggles: resize', function() {
@@ -339,7 +339,7 @@ describe('VideoStage: Video', function() {
       var component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
-          endless
+          endlessMode
           onNextVideo={callback}
         />
       );

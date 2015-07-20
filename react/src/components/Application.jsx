@@ -3,13 +3,23 @@ var TopNavBar = require('./TopNavBar');
 var VideoStage = require('./VideoStage');
 
 var Application = React.createClass({
+  getInitialState: function() {
+    return {
+      endlessMode: true,
+      videos: []
+    };
+  },
+
   render: function() {
     return (
       <div>
-        <TopNavBar />
+        <TopNavBar endlessMode={this.state.endlessMode} />
 
         <div className="container">
-          <VideoStage videos={[require('app/assets/test.mp4'), require('app/assets/test.mp4') + '?q=292992']} />
+          <VideoStage
+            videos={this.state.videos}
+            endlessMode={this.state.endlessMode}
+          />
         </div>
       </div>
     );

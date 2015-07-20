@@ -24,7 +24,7 @@ var Video = React.createClass({
     height: React.PropTypes.number,
     width: React.PropTypes.number,
     pause: React.PropTypes.bool,
-    endless: React.PropTypes.bool,
+    endlessMode: React.PropTypes.bool,
     options: React.PropTypes.object,
     onReady: React.PropTypes.func,
     eventListeners: React.PropTypes.object,
@@ -45,7 +45,7 @@ var Video = React.createClass({
   getDefaultProps: function() {
     return {
       pause: false,
-      endless: false,
+      endlessMode: false,
       options: DEFAULT_VIDEO_OPTIONS,
       onReady: noop,
       eventListeners: {},
@@ -73,8 +73,8 @@ var Video = React.createClass({
       }
     }
 
-    var isEndless = this.props.endless;
-    var willBeEndless = nextProps.endless;
+    var isEndless = this.props.endlessMode;
+    var willBeEndless = nextProps.endlessMode;
 
     if (isEndless !== willBeEndless) {
       if (willBeEndless) {
@@ -183,7 +183,7 @@ var Video = React.createClass({
       this.pauseVideo();
     }
 
-    if (this.props.endless) {
+    if (this.props.endlessMode) {
       this.addEndlessMode();
     }
   },
