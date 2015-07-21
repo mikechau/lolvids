@@ -474,7 +474,7 @@ describe('VideoStage: Video', function() {
       var handleResizeEventListenerSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addResizeEventListener');
       var readyCallback = sandbox.spy();
 
-      ReactTestUtils.renderIntoDocument(
+      var component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           resize
@@ -482,9 +482,12 @@ describe('VideoStage: Video', function() {
         />
       );
 
-      expect(readyCallback).to.be.calledOnce;
-      expect(handleVideoPlayerResizeSpy).to.be.calledOnce;
-      expect(handleResizeEventListenerSpy).to.be.calledOnce;
+      var vjsParentEl = component.getVideoPlayerEl().parentElement;
+
+      expect(vjsParentEl.getAttribute('data-reactid')).to.not.exist;
+      expect(readyCallback, 'on ready callback not called once').to.be.calledOnce;
+      expect(handleVideoPlayerResizeSpy, '#handleVideoPlayerResize not called once').to.be.calledOnce;
+      expect(handleResizeEventListenerSpy, '#addResizeEventListener not called once').to.be.calledOnce;
     });
 
     it('#handleVideoPlayerResize', function() {

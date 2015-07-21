@@ -229,6 +229,11 @@ var Video = React.createClass({
   },
 
   handleVideoPlayerReady: function() {
+    this
+      .getVideoPlayerEl()
+      .parentElement
+      .removeAttribute('data-reactid');
+
     if (this.props.resize) {
       this.handleVideoPlayerResize();
       this.addResizeEventListener();
