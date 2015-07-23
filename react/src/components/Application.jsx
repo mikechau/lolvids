@@ -2,8 +2,6 @@ var React = require('react');
 var TopNavBar = require('./TopNavBar');
 var VideoStage = require('./VideoStage');
 
-var TEST_VIDEO = require('app/assets/test.mp4');
-
 var Application = React.createClass({
   getInitialState: function() {
     return {
