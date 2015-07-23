@@ -27,8 +27,7 @@ var VideoStage = React.createClass({
 
   getInitialState: function() {
     return {
-      currentVideoIndex: 0,
-      pause: false
+      currentVideoIndex: 0
     };
   },
 
@@ -51,8 +50,7 @@ var VideoStage = React.createClass({
 
   setCurrentVideoIndex: function(newIndex) {
     this.setState({
-      currentVideoIndex: newIndex,
-      pause: false
+      currentVideoIndex: newIndex
     });
   },
 
@@ -114,7 +112,6 @@ var VideoStage = React.createClass({
 
   render: function() {
     var currentVideo = this.getCurrentVideo();
-    var pause = this.state.pause;
 
     return (
       <div className="row vertical-align">
@@ -124,7 +121,6 @@ var VideoStage = React.createClass({
           <Video
             ref="videoPlayer"
             src={currentVideo}
-            pause={pause}
             endlessMode={this.props.endlessMode}
             resize
             resizeOptions={{
