@@ -19,7 +19,9 @@ var TransitionButton = React.createClass({
   },
 
   handleClick: function(e) {
-    this.props.onClick(e);
+    e.preventDefault();
+
+    this.props.onClick();
   },
 
   _isRight: function() {

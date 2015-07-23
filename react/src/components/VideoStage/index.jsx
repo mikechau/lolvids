@@ -14,12 +14,14 @@ var KEYS = {
 
 var VideoStage = React.createClass({
   propTypes: {
-    videos: React.PropTypes.array
+    videos: React.PropTypes.array,
+    endlessMode: React.PropTypes.bool
   },
 
   getDefaultProps: function() {
     return {
-      videos: []
+      videos: [],
+      endlessMode: false
     };
   },
 
@@ -49,15 +51,8 @@ var VideoStage = React.createClass({
 
   setCurrentVideoIndex: function(newIndex) {
     this.setState({
-      currentVideoIndex: newIndex
-    });
-  },
-
-  setTogglePause: function() {
-    var pauseState = this.state.pause;
-
-    this.setState({
-      pause: !pauseState
+      currentVideoIndex: newIndex,
+      pause: false
     });
   },
 
@@ -74,22 +69,20 @@ var VideoStage = React.createClass({
 
     switch (keyCode) {
       case KEYS.arrow.left:
-        this.handlePrevious(e);
+        this.handlePrevious();
         break;
       case KEYS.arrow.right:
-        this.handleNext(e);
+        this.handleNext();
         break;
       case KEYS.spacebar:
-        this.handlePause(e);
+        this.handlePause();
         break;
       default:
         return true;
     }
   },
 
-  handleNext: function(e) {
-    e.preventDefault();
-
+  handleNext: function() {
     var nextIndex = this.state.currentVideoIndex + 1;
     var newIndex;
 
@@ -102,9 +95,7 @@ var VideoStage = React.createClass({
     this.setCurrentVideoIndex(newIndex);
   },
 
-  handlePrevious: function(e) {
-    e.preventDefault();
-
+  handlePrevious: function() {
     var prevIndex = this.state.currentVideoIndex - 1;
     var newIndex;
 
@@ -117,10 +108,8 @@ var VideoStage = React.createClass({
     this.setCurrentVideoIndex(newIndex);
   },
 
-  handlePause: function(e) {
-    e.preventDefault();
-
-    this.setTogglePause();
+  handlePause: function() {
+    this.refs.videoPlayer.togglePauseVideo();
   },
 
   render: function() {
@@ -133,14 +122,17 @@ var VideoStage = React.createClass({
 
         <div className="col-xs-10 col-md-10 text-center">
           <Video
+            ref="videoPlayer"
             src={currentVideo}
             pause={pause}
+            endlessMode={this.props.endlessMode}
             resize
             resizeOptions={{
               aspectRatio: (10 / 21),
               shortWindowVideoHeightAdjustment: 80,
               defaultVideoWidthAdjustment: 30
             }}
+            onNextVideo={this.handleNext}
           />
         </div>
 

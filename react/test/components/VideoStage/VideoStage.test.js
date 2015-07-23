@@ -125,18 +125,6 @@ describe('VideoStage', function() {
 
       expect(component.getCurrentVideo(), 'it did not get the second video').to.equal(VIDEOS[1]);
     });
-
-    it('#setTogglePause', function() {
-      var component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
-
-      component.setTogglePause();
-
-      expect(component.state.pause, 'it is not paused').to.be.true;
-
-      component.setTogglePause();
-
-      expect(component.state.pause, 'it is paused').to.be.false;
-    });
   });
 
   describe('component handlers', function() {
@@ -165,9 +153,9 @@ describe('VideoStage', function() {
     });
 
     it('#handlePause', function() {
-      var pauseSpy = sandbox.spy(VideoStage.prototype.__reactAutoBindMap, 'setTogglePause');
-
       var component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+
+      var pauseSpy = sandbox.spy(component.refs.videoPlayer, 'togglePauseVideo');
 
       component.handlePause(noopEvent);
 

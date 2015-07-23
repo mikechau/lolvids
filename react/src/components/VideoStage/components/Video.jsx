@@ -23,7 +23,6 @@ var Video = React.createClass({
     src: React.PropTypes.string.isRequired,
     height: React.PropTypes.number,
     width: React.PropTypes.number,
-    pause: React.PropTypes.bool,
     endlessMode: React.PropTypes.bool,
     options: React.PropTypes.object,
     onReady: React.PropTypes.func,
@@ -44,7 +43,6 @@ var Video = React.createClass({
 
   getDefaultProps: function() {
     return {
-      pause: false,
       endlessMode: false,
       options: DEFAULT_VIDEO_OPTIONS,
       onReady: noop,
@@ -62,17 +60,6 @@ var Video = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var isPaused = this.props.pause;
-    var willBePaused = nextProps.pause;
-
-    if (isPaused !== willBePaused) {
-      if (willBePaused) {
-        this.pauseVideo();
-      } else {
-        this.playVideo();
-      }
-    }
-
     var isEndless = this.props.endlessMode;
     var willBeEndless = nextProps.endlessMode;
 
@@ -100,6 +87,10 @@ var Video = React.createClass({
 
     if (currentSrc !== newSrc) {
       this.setVideoPlayerSrc(newSrc);
+    } else {
+      if (isEndless === willBeEndless) {
+        this.restartVideo();
+      }
     }
   },
 
@@ -179,10 +170,6 @@ var Video = React.createClass({
 
     player.src(src);
 
-    if (this.props.pause) {
-      this.pauseVideo();
-    }
-
     if (this.props.endlessMode) {
       this.addEndlessMode();
     }
@@ -226,6 +213,18 @@ var Video = React.createClass({
 
   playVideo: function() {
     this._player.play();
+  },
+
+  restartVideo: function() {
+    this._player.currentTime(0).play();
+  },
+
+  togglePauseVideo: function() {
+    if (this._player.paused()) {
+      this.playVideo();
+    } else {
+      this.pauseVideo();
+    }
   },
 
   handleVideoPlayerReady: function() {

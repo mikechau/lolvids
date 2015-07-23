@@ -113,7 +113,6 @@ describe('VideoStage: Video', function() {
       var component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
-          pause
         />
       );
 
@@ -122,25 +121,6 @@ describe('VideoStage: Video', function() {
       });
 
       expect(srcSpy).to.not.be.called;
-    });
-
-    it('ignores: pause not changing', function() {
-      var pauseSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'pauseVideo');
-      var component = ReactTestUtils.renderIntoDocument(
-        <Video
-          src={TEST_VIDEO}
-          pause
-        />
-      );
-
-      expect(component.getVideoPlayer().paused()).to.be.true;
-
-      component.setProps({
-        pause: true
-      });
-
-      expect(component.getVideoPlayer().paused()).to.be.true;
-      expect(pauseSpy).to.have.been.calledOnce;
     });
 
     it('ignores: endlessMode not changing', function() {
@@ -176,32 +156,31 @@ describe('VideoStage: Video', function() {
       expect(resizeSpy).to.have.been.calledOnce;
     });
 
-    it('responds: to src change', function() {
-      var srcSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'setVideoPlayerSrc');
+    it('responds: to src not changing and endless mode not changing', function() {
+      var restartSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'restartVideo');
       var component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
-          pause
+          endless
         />
       );
+
+      component.setProps({
+        src: TEST_VIDEO
+      });
+
+      expect(restartSpy).to.be.calledOnce;
+    });
+
+    it('responds: to src change', function() {
+      var srcSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'setVideoPlayerSrc');
+      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.setProps({
         src: TEST_VIDEO + '?q=1337'
       });
 
       expect(srcSpy).to.be.calledOnce;
-    });
-
-    it('responds: to pause change', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
-
-      expect(component.getVideoPlayer().paused(), 'video player is not playing').to.be.false;
-
-      component.setProps({
-        pause: true
-      });
-
-      expect(component.getVideoPlayer().paused(), 'video player is not paused').to.be.true;
     });
 
     it('responds: to endlessMode change', function() {
@@ -236,18 +215,6 @@ describe('VideoStage: Video', function() {
       });
 
       expect(resizeSpy).to.have.been.calledOnce;
-    });
-
-    it('toggles: pause', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} pause />);
-
-      expect(component.getVideoPlayer().paused(), 'video player is not paused').to.be.true;
-
-      component.setProps({
-        pause: false
-      });
-
-      expect(component.getVideoPlayer().paused(), 'video player is not playing').to.be.false;
     });
 
     it('toggles: endlessMode', function() {
@@ -444,7 +411,7 @@ describe('VideoStage: Video', function() {
 
     it('#setVideoPlayerSrc', function() {
       var NEW_VIDEO = TEST_VIDEO + '?q=1337';
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} pause />);
+      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.setVideoPlayerSrc(NEW_VIDEO);
 
@@ -460,11 +427,34 @@ describe('VideoStage: Video', function() {
     });
 
     it('#playVideo', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} pause />);
+      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
+      component.pauseVideo();
       component.playVideo();
 
       expect(component.getVideoPlayer().paused()).to.be.false;
+    });
+
+    it('#restartVideo', function() {
+      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
+      component.pauseVideo();
+      component.restartVideo();
+
+      expect(component.getVideoPlayer().paused()).to.be.false;
+    });
+
+    it('#togglePauseVideo', function() {
+      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
+      component.getVideoPlayer().pause();
+      component.togglePauseVideo();
+
+      expect(component.getVideoPlayer().paused(), 'video is not playing').to.be.false;
+
+      component.togglePauseVideo();
+
+      expect(component.getVideoPlayer().paused(), 'video is not paused').to.be.true;
     });
   });
 
@@ -520,7 +510,6 @@ describe('VideoStage: Video', function() {
       var component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
-          pause
           onNextVideo={callback}
         />
       );
