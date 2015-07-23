@@ -24,6 +24,7 @@ var TopNavBar = React.createClass({
   },
 
   handleEndlessModeClick: function(e) {
+    e.preventDefault();
     this.props.onEndlessModeClick(e);
   },
 
