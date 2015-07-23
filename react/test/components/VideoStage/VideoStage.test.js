@@ -5,6 +5,10 @@ var Video = require('app/components/VideoStage/components/Video');
 
 var VIDEO = require('app/assets/test.mp4');
 
+var LEFT_KEY = 37;
+var RIGHT_KEY = 39;
+var SPACEBAR_KEY = 32;
+
 var VIDEOS = [
   VIDEO,
   VIDEO + '?q=1337'
@@ -57,7 +61,7 @@ describe('VideoStage', function() {
 
       var keyboardEvent = document.createEvent('HTMLEvents');
       keyboardEvent.initEvent('keydown', true, true);
-      keyboardEvent.keyCode = 39;
+      keyboardEvent.keyCode = RIGHT_KEY;
       document.body.dispatchEvent(keyboardEvent);
 
       expect(nextSpy, 'next video was called').to.not.be.calledOnce;
@@ -72,7 +76,7 @@ describe('VideoStage', function() {
 
       var keyboardEvent = document.createEvent('HTMLEvents');
       keyboardEvent.initEvent('keydown', true, true);
-      keyboardEvent.keyCode = 39;
+      keyboardEvent.keyCode = RIGHT_KEY;
       document.body.dispatchEvent(keyboardEvent);
 
       expect(nextSpy).to.be.calledOnce;
@@ -85,7 +89,7 @@ describe('VideoStage', function() {
 
       var keyboardEvent = document.createEvent('HTMLEvents');
       keyboardEvent.initEvent('keydown', true, true);
-      keyboardEvent.keyCode = 37;
+      keyboardEvent.keyCode = LEFT_KEY;
       document.body.dispatchEvent(keyboardEvent);
 
       expect(previousSpy).to.be.calledOnce;
@@ -98,7 +102,7 @@ describe('VideoStage', function() {
 
       var keyboardEvent = document.createEvent('HTMLEvents');
       keyboardEvent.initEvent('keydown', true, true);
-      keyboardEvent.keyCode = 32;
+      keyboardEvent.keyCode = SPACEBAR_KEY;
       document.body.dispatchEvent(keyboardEvent);
 
       expect(pauseSpy).to.be.calledOnce;
