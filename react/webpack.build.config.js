@@ -43,7 +43,7 @@ var config = _.merge(
           date: buildDate.toDateString()
         }
       }),
-      new StatsPlugin(path.join(__dirname, 'build', 'stats.json'), {
+      new StatsPlugin(path.join('..', 'stats.json'), {
         chunkModules: true,
         exclude: [
           /node_modules[\\\/]react(-router)?[\\\/]/

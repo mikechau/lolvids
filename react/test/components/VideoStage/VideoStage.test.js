@@ -2,6 +2,7 @@ var React = require('react');
 var ReactTestUtils = require('react/lib/ReactTestUtils');
 var VideoStage = require('app/components/VideoStage');
 var Video = require('app/components/VideoStage/components/Video');
+var Metadata = require('app/components/VideoStage/components/Metadata');
 
 var VIDEO = require('app/assets/test.mp4');
 
@@ -10,8 +11,8 @@ var RIGHT_KEY = 39;
 var SPACEBAR_KEY = 32;
 
 var VIDEOS = [
-  VIDEO,
-  VIDEO + '?q=1337'
+  {source: VIDEO},
+  {source: VIDEO + '?q=1337'}
 ];
 
 var noopEvent = {
@@ -35,6 +36,13 @@ describe('VideoStage', function() {
       var videoComponent = ReactTestUtils.findRenderedComponentWithType(component, Video);
 
       expect(videoComponent).to.be.instanceOf(Video);
+    });
+
+    it('renders: a metadata component', function() {
+      var component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+      var metadataComponent = ReactTestUtils.findRenderedComponentWithType(component, Metadata);
+
+      expect(metadataComponent).to.be.instanceOf(Metadata);
     });
   });
 
@@ -120,6 +128,24 @@ describe('VideoStage', function() {
       });
 
       expect(component.getCurrentVideo(), 'it did not get the second video').to.equal(VIDEOS[1]);
+    });
+
+    it('#getTotalVideos', function() {
+      var component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+
+      expect(component.getTotalVideos()).to.equal(1);
+    });
+
+    it('#getVideoCounterStart', function() {
+      var component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+
+      expect(component.getVideoCounterStart()).to.equal(1);
+    });
+
+    it('#getVideoCounterEnd', function() {
+      var component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+
+      expect(component.getVideoCounterEnd()).to.equal(2);
     });
 
     it('#setCurrentVideoIndex', function() {

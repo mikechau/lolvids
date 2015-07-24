@@ -7,6 +7,7 @@ module.exports = function karmaConfig(config) {
     frameworks: [
       'sinon-chai',
       'sinon',
+      'chai-as-promised',
       'chai',
       'mocha'
     ],
@@ -59,10 +60,16 @@ module.exports = function karmaConfig(config) {
     },
 
     client: {
+      captureConsole: true,
       chai: {
         includeStack: true,
         showDiff: true,
         truncateThreshold: 0
+      },
+      mocha: {
+        reporter: 'html',
+        bail: true,
+        ui: 'bdd'
       }
     }
   });

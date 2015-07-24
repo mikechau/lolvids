@@ -1,6 +1,7 @@
 var React = require('react');
 var TransitionButton = require('./components/TransitionButton');
 var Video = require('./components/Video');
+var Metadata = require('./components/Metadata');
 
 var KEYS = {
   arrow: {
@@ -41,11 +42,19 @@ var VideoStage = React.createClass({
 
   getCurrentVideo: function() {
     var currentVideoIndex = this.state.currentVideoIndex;
-    return this.props.videos[currentVideoIndex];
+    return this.props.videos[currentVideoIndex] || {};
   },
 
   getTotalVideos: function() {
     return Math.max(0, this.props.videos.length - 1);
+  },
+
+  getVideoCounterStart: function() {
+    return this.state.currentVideoIndex + 1;
+  },
+
+  getVideoCounterEnd: function() {
+    return this.props.videos.length;
   },
 
   setCurrentVideoIndex: function(newIndex) {
@@ -114,25 +123,37 @@ var VideoStage = React.createClass({
     var currentVideo = this.getCurrentVideo();
 
     return (
-      <div className="row vertical-align">
-        <TransitionButton direction="left" onClick={this.handlePrevious} />
+      <div>
+        <div className="row vertical-align">
+          <TransitionButton direction="left" onClick={this.handlePrevious} />
 
-        <div className="col-xs-10 col-md-10 text-center">
-          <Video
-            ref="videoPlayer"
-            src={currentVideo}
-            endlessMode={this.props.endlessMode}
-            resize
-            resizeOptions={{
-              aspectRatio: (10 / 21),
-              shortWindowVideoHeightAdjustment: 80,
-              defaultVideoWidthAdjustment: 30
-            }}
-            onNextVideo={this.handleNext}
-          />
+          <div className="col-xs-10 col-md-10 text-center">
+            <Video
+              ref="videoPlayer"
+              src={currentVideo.source}
+              endlessMode={this.props.endlessMode}
+              resize
+              resizeOptions={{
+                aspectRatio: (10 / 21),
+                shortWindowVideoHeightAdjustment: 80,
+                defaultVideoWidthAdjustment: 30
+              }}
+              onNextVideo={this.handleNext}
+            />
+          </div>
+
+          <TransitionButton direction="right" onClick={this.handleNext} />
         </div>
 
-        <TransitionButton direction="right" onClick={this.handleNext} />
+        <div className="row">
+          <Metadata
+            title={currentVideo.name}
+            timestamp={currentVideo.ts}
+            id={currentVideo.id}
+            startIndex={this.getVideoCounterStart()}
+            endIndex={this.getVideoCounterEnd()}
+          />
+        </div>
       </div>
     );
   }

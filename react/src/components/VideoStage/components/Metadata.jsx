@@ -9,6 +9,16 @@ var Metadata = React.createClass({
     endIndex: React.PropTypes.number
   },
 
+  getDefaultProps: function() {
+    return {
+      title: 'N/A',
+      timestamp: 'N/A',
+      id: 'N/A',
+      startIndex: 0,
+      endIndex: 0
+    };
+  },
+
   render: function() {
     return (
       <div id="video-meta-data">

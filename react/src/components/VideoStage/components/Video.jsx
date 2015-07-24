@@ -87,10 +87,8 @@ var Video = React.createClass({
 
     if (currentSrc !== newSrc) {
       this.setVideoPlayerSrc(newSrc);
-    } else {
-      if (isEndless === willBeEndless) {
-        this.restartVideo();
-      }
+    } else if (isEndless === willBeEndless) {
+      this.restartVideo();
     }
   },
 

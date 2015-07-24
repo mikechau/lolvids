@@ -10,11 +10,15 @@ describe('Spinner', function() {
 
       var component = shallowRenderer.getRenderOutput();
 
-      expect(component.type).to.equal('div');
-      expect(component.props.style).to.equal('position:fixed;top:50%;left:50%');
+      expect(component.type, 'tag did not match').to.equal('div');
+      expect(component.props.style, 'style did not match').to.eql({
+        position: 'fixed',
+        top: '50%',
+        left: '50%'
+      });
 
-      expect(component.props.children.type).to.equal('div');
-      expect(component.props.children.props.className).to.equal('whirly-loader');
+      expect(component.props.children.type, 'child tag did not match').to.equal('div');
+      expect(component.props.children.props.className, 'child className did not match').to.equal('whirly-loader');
     });
   });
 });
