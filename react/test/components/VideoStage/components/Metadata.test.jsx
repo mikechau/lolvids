@@ -51,8 +51,10 @@ describe('VideoStage: Metadata', function() {
 
     it('renders: a video counter', function() {
       var startIndex = domNode.querySelector('#video-counter-start');
+      var endIndex = domNode.querySelector('#video-counter-end');
 
       expect(startIndex.textContent).to.equal(data.startIndex.toString());
+      expect(endIndex.textContent).to.equal(data.endIndex.toString());
     });
 
     it('renders: a link to source', function() {
