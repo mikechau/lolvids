@@ -49,7 +49,7 @@ var TopNavBar = React.createClass({
       <nav className="navbar navbar-default navbar-static-top">
         <div className="container-fluid">
           <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed" onClick={this.handleCollapseNavClick}>
+            <button ref="collapseNavMenuButton" type="button" className="navbar-toggle collapsed" onClick={this.handleCollapseNavClick}>
               <span className="sr-only">Toggle navigation</span>
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
@@ -58,11 +58,11 @@ var TopNavBar = React.createClass({
             <a className="navbar-brand" href="/jquery">lolvids-react</a>
           </div>
 
-          <div className={collapsedNavMenuClasses}>
+          <div ref="collapsedNavMenuOptions" className={collapsedNavMenuClasses}>
             <ul className="nav navbar-nav">
               <li className="active"><a href="/react">Home <span className="sr-only">(current)</span></a></li>
               <li><a href="https://github.com/mikechau/lolvids">GitHub</a></li>
-              <li className={endlessModeLiClasses} onClick={this.handleEndlessModeClick}>
+              <li ref="endlessModeToggle" className={endlessModeLiClasses} onClick={this.handleEndlessModeClick}>
                 <a href="#autoplay">
                   <i className="glyphicon glyphicon-refresh"></i>&nbsp;&nbsp;Endless Mode ({endlessModeStatus})
                 </a>

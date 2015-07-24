@@ -18,6 +18,39 @@ describe('TopNavBar', function() {
     });
   });
 
+  describe('on click (endless mode)', function() {
+    it('toggles: "active" class', function() {
+      var component = ReactTestUtils.renderIntoDocument(
+        <TopNavBar endlessMode />
+      );
+
+      var toggleDOMNode = React.findDOMNode(component.refs.endlessModeToggle);
+      expect(toggleDOMNode.className, 'active class not set').to.contain('active');
+
+      component.setProps({
+        endlessMode: false
+      });
+
+      expect(toggleDOMNode.className, 'active class not unset').to.not.contain('active');
+    });
+  });
+
+  describe('on click (collapse nav)', function() {
+    it('toggles: "navbar-collapse" and "collapse" classes', function() {
+      var component = ReactTestUtils.renderIntoDocument(
+        <TopNavBar />
+      );
+
+      var collapsedNavMenuDOMNode = React.findDOMNode(component.refs.collapsedNavMenuOptions);
+
+      expect(collapsedNavMenuDOMNode.className, 'it is not collapsed').to.contain('navbar-collapse collapse');
+
+      ReactTestUtils.Simulate.click(component.refs.collapseNavMenuButton);
+
+      expect(collapsedNavMenuDOMNode.className, 'it is not expanded').to.not.contain('navbar-collapse collapse');
+    });
+  });
+
   describe('component handlers', function() {
     it('#handleEndlessModeClick', function(done) {
       var callback = function() {
@@ -30,19 +63,19 @@ describe('TopNavBar', function() {
 
       component.handleEndlessModeClick(eventNoop);
     });
-  });
 
-  describe('#handleCollapseNavClick', function(done) {
-    var component = ReactTestUtils.renderIntoDocument(
-      <TopNavBar />
-    );
+    it('#handleCollapseNavClick', function() {
+      var component = ReactTestUtils.renderIntoDocument(
+        <TopNavBar />
+      );
 
-    component.handleCollapseNavClick();
+      component.handleCollapseNavClick();
 
-    expect(component.state.showCollapseNav, 'showCollapseNav state not true').to.be.true;
+      expect(component.state.showCollapseNav, 'showCollapseNav state not true').to.be.true;
 
-    component.handleCollapseNavClick();
+      component.handleCollapseNavClick();
 
-    expect(component.state.showCollapseNav, 'showCollapseNav state not false').to.be.false;
+      expect(component.state.showCollapseNav, 'showCollapseNav state not false').to.be.false;
+    });
   });
 });
