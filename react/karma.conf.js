@@ -17,8 +17,6 @@ module.exports = function karmaConfig(config) {
     ],
 
     files: [
-      'node_modules/phantomjs-polyfill/bind-polyfill.js',
-      'test/_lib/phantomjs-click-polyfill.js',
       'test/_lib/browser-tests.index.js'
     ],
 

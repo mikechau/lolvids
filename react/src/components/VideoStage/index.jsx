@@ -125,7 +125,7 @@ var VideoStage = React.createClass({
     return (
       <div>
         <div className="row vertical-align">
-          <TransitionButton direction="left" onClick={this.handlePrevious} />
+          <TransitionButton id="video-previous-action" direction="left" onClick={this.handlePrevious} />
 
           <div className="col-xs-10 col-md-10 text-center">
             <Video
@@ -142,7 +142,7 @@ var VideoStage = React.createClass({
             />
           </div>
 
-          <TransitionButton direction="right" onClick={this.handleNext} />
+          <TransitionButton id="video-next-action" direction="right" onClick={this.handleNext} />
         </div>
 
         <div className="row">

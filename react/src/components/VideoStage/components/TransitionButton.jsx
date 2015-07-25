@@ -9,7 +9,8 @@ var TransitionButton = React.createClass({
       'left',
       'right'
     ]).isRequired,
-    onClick: React.PropTypes.func
+    onClick: React.PropTypes.func,
+    id: React.PropTypes.string
   },
 
   getDefaultProps: function() {
@@ -40,7 +41,7 @@ var TransitionButton = React.createClass({
     });
 
     return (
-      <div className="col-xs-1 col-sm-1 col-md-1 col-video-transition" onClick={this.handleClick}>
+      <div id={this.props.id} className="col-xs-1 col-sm-1 col-md-1 col-video-transition" onClick={this.handleClick}>
         <span className={iconClasses} aria-hidden="true"></span>
       </div>
     );

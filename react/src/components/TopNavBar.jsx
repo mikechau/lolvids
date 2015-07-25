@@ -63,8 +63,8 @@ var TopNavBar = React.createClass({
               <li className="active"><a href="/react">Home <span className="sr-only">(current)</span></a></li>
               <li><a href="https://github.com/mikechau/lolvids">GitHub</a></li>
               <li ref="endlessModeToggle" className={endlessModeLiClasses} onClick={this.handleEndlessModeClick}>
-                <a href="#autoplay">
-                  <i className="glyphicon glyphicon-refresh"></i>&nbsp;&nbsp;Endless Mode ({endlessModeStatus})
+                <a id="endless-mode-action" href="#autoplay">
+                <i className="glyphicon glyphicon-refresh"></i>&nbsp;&nbsp;Endless Mode (<span id="endless-mode-status">{endlessModeStatus}</span>)
                 </a>
               </li>
             </ul>
