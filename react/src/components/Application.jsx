@@ -23,10 +23,7 @@ var Application = React.createClass({
       .then(function(response) {
         return response.json();
       })
-      .then(this.setVideos)
-      .catch(function(err) {
-        console.error(err);
-      });
+      .then(this.setVideos);
   },
 
   setVideos: function(videos) {
