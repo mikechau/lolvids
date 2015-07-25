@@ -1,4 +1,4 @@
-import React from 'react';
+var React = require('react');
 
 var Metadata = React.createClass({
   propTypes: {
@@ -7,6 +7,16 @@ var Metadata = React.createClass({
     id: React.PropTypes.string,
     startIndex: React.PropTypes.number,
     endIndex: React.PropTypes.number
+  },
+
+  getDefaultProps: function() {
+    return {
+      title: 'N/A',
+      timestamp: 'N/A',
+      id: 'N/A',
+      startIndex: 0,
+      endIndex: 0
+    };
   },
 
   render: function() {
@@ -26,7 +36,7 @@ var Metadata = React.createClass({
           <br />
           <ul className="list-unstyled">
             <li>ID: <span id="video-id">{this.props.id}</span></li>
-            <li>Video: <span id="video-counter-start">1</span>{`/`}<span id="video-counter-end">168</span></li>
+            <li>Video: <span id="video-counter-start">{this.props.startIndex}</span>{`/`}<span id="video-counter-end">{this.props.endIndex}</span></li>
           </ul>
         </div>
 

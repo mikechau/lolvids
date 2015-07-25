@@ -18,7 +18,7 @@ var Dropdown = React.createClass({
   },
 
   componentWillUnmount: function() {
-    document.body.removeEventListener('click', this.handleBodyClick);
+    document.removeEventListener('click', this.handleBodyClick);
   },
 
   handleBodyClick: function(e) {
@@ -26,7 +26,7 @@ var Dropdown = React.createClass({
       this.setState({
         open: false
       }, function() {
-        document.body.removeEventListener('click', this.handleBodyClick);
+        document.removeEventListener('click', this.handleBodyClick);
       });
     }
   },
@@ -40,9 +40,9 @@ var Dropdown = React.createClass({
       open: !open
     }, function() {
       if (this.state.open) {
-        document.body.addEventListener('click', this.handleBodyClick);
+        document.addEventListener('click', this.handleBodyClick);
       } else {
-        document.body.removeEventListener('click', this.handleBodyClick);
+        document.removeEventListener('click', this.handleBodyClick);
       }
     });
   },

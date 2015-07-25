@@ -17,14 +17,18 @@ module.exports = function(customConfig) {
     jsLoader = 'react-hot!' + jsLoader;
   }
 
+  if (customConfig.test) {
+    jsLoader = jsLoader + '&plugins=babel-plugin-rewire';
+  }
+
   var cssLoader = 'style-loader!css-loader';
   var lessLoader = 'style-loader!css-loader!less-loader';
   var scssLoader = 'style-loader!css-loader!sass-loader';
 
   if (customConfig.build) {
-    cssLoader = ExtractTextPlugin.extract('style-loader', 'css');
-    lessLoader = ExtractTextPlugin.extract('style-loader', 'css!less');
-    scssLoader = ExtractTextPlugin.extract('style-loader', 'css!sass');
+    cssLoader = ExtractTextPlugin.extract('style-loader', 'css-loader');
+    lessLoader = ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader');
+    scssLoader = ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader');
   }
 
   var plugins = [
@@ -112,7 +116,7 @@ module.exports = function(customConfig) {
           loader: 'url-loader?limit=10000&name=[name]-[hash].[ext]'
         },
         {
-          test: /\.(ttf|eot)$/,
+          test: /\.(ttf|eot|mp4)$/,
           loader: 'file-loader?name=[name]-[hash].[ext]'
         },
         {

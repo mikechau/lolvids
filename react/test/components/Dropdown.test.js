@@ -1,14 +1,16 @@
-import React from 'react';
-import ReactTestUtils from 'react/lib/ReactTestUtils';
-import Dropdown from 'app/components/Dropdown';
+var React = require('react');
+var ReactTestUtils = require('react/lib/ReactTestUtils');
+var Dropdown = require('app/components/Dropdown');
 
 describe('Dropdown', function() {
-  it('renders: a dropdown list item element', function() {
-    var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
-    var domNode = React.findDOMNode(component);
+  describe('on initial render', function() {
+    it('renders: a dropdown list item element', function() {
+      var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
+      var domNode = React.findDOMNode(component);
 
-    expect(domNode.nodeName).to.equal('LI');
-    expect(domNode.getAttribute('class')).to.equal('dropdown-toggle');
+      expect(domNode.nodeName).to.equal('LI');
+      expect(domNode.getAttribute('class')).to.equal('dropdown-toggle');
+    });
   });
 
   describe('on click (component)', function() {
@@ -23,7 +25,7 @@ describe('Dropdown', function() {
       expect(component.state.open).to.be.false;
     });
 
-    it('render toggles: open class', function() {
+    it('render toggles: "open" class', function() {
       var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
       var domNode = React.findDOMNode(component);
       var dropdownLink = domNode.querySelector('a');
@@ -55,7 +57,7 @@ describe('Dropdown', function() {
       expect(component.state.open).to.be.false;
     });
 
-    it('renders: no open class', function() {
+    it('renders: no "open" class', function() {
       var component = ReactTestUtils.renderIntoDocument(<Dropdown title="Test" />);
       var domNode = React.findDOMNode(component);
       var dropdownLink = domNode.querySelector('a');

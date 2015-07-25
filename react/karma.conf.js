@@ -5,10 +5,11 @@ var webpackConfig = require('./webpack.karma.config');
 module.exports = function karmaConfig(config) {
   config.set({
     frameworks: [
-      'mocha',
-      'chai',
+      'sinon-chai',
       'sinon',
-      'sinon-chai'
+      'chai-as-promised',
+      'chai',
+      'mocha'
     ],
 
     reporters: [
@@ -16,8 +17,6 @@ module.exports = function karmaConfig(config) {
     ],
 
     files: [
-      'node_modules/phantomjs-polyfill/bind-polyfill.js',
-      'test/_lib/phantomjs-click-polyfill.js',
       'test/_lib/browser-tests.index.js'
     ],
 
@@ -56,6 +55,20 @@ module.exports = function karmaConfig(config) {
 
     phantomjsLauncher: {
       exitOnResourceError: true
+    },
+
+    client: {
+      captureConsole: true,
+      chai: {
+        includeStack: true,
+        showDiff: true,
+        truncateThreshold: 0
+      },
+      mocha: {
+        reporter: 'html',
+        bail: true,
+        ui: 'bdd'
+      }
     }
-  })
+  });
 }
