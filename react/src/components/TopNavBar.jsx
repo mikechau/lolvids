@@ -74,9 +74,9 @@ var TopNavBar = React.createClass({
                 <li><a href="/jquery">jquery</a></li>
                 <li className="divider"></li>
                 <li className="active"><a href="/react">react</a></li>
-                <li><a href="/react-router">react-router</a></li>
-                <li className="divider"></li>
                 <li><a href="/react-alt">react-alt</a></li>
+                <li className="divider"></li>
+                <li><a href="/react-router">react-router</a></li>
                 <li><a href="/react-router-alt">react-router-alt</a></li>
               </Dropdown>
             </ul>
