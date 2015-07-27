@@ -55,7 +55,7 @@ var TopNavBar = React.createClass({
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="/jquery">lolvids-react</a>
+            <a className="navbar-brand" href="/react">lolvids-react</a>
           </div>
 
           <div ref="collapsedNavMenuOptions" className={collapsedNavMenuClasses}>
