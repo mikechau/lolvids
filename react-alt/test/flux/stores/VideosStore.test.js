@@ -1,6 +1,6 @@
 var alt = require('app/flux/alt');
 var videosStore = require('app/flux/stores/VideosStore').videosStore;
-var videoActions = require('app/flux/actions/VideoActions');
+var videosActions = require('app/flux/actions/VideosActions');
 
 var VIDEOS_MOCK_PAYLOAD = [
   {source: 'test.local/1'}
@@ -12,7 +12,7 @@ describe('Store: VideosStore', function() {
   });
 
   it('listens for a fetch videos action', function() {
-    alt.dispatcher.dispatch({action: videoActions.FETCH_VIDEOS});
+    alt.dispatcher.dispatch({action: videosActions.FETCH_VIDEOS});
 
     var state = videosStore.getState();
 
@@ -21,7 +21,7 @@ describe('Store: VideosStore', function() {
   });
 
   it('listens for a update videos action', function() {
-    alt.dispatcher.dispatch({action: videoActions.UPDATE_VIDEOS, data: VIDEOS_MOCK_PAYLOAD});
+    alt.dispatcher.dispatch({action: videosActions.UPDATE_VIDEOS, data: VIDEOS_MOCK_PAYLOAD});
 
     var state = videosStore.getState();
 

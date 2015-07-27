@@ -1,12 +1,12 @@
 var alt = require('app/flux/alt');
-var videoActions = require('app/flux/actions/VideoActions');
+var videosActions = require('app/flux/actions/VideosActions');
 
 var MOCK_RESPONSE = [
   {source: 'test.local/1', name: 'TEST', id: '1', ts: 'T1'},
   {source: 'test.local/2', name: 'TEST2', id: '2', ts: 'T2'}
 ];
 
-describe('Actions: VideoActions', function() {
+describe('Actions: VideosActions', function() {
   var sandbox;
 
   beforeEach(function() {
@@ -14,7 +14,7 @@ describe('Actions: VideoActions', function() {
 
     sandbox = sinon.sandbox.create();
 
-    videoActions.__Rewire__('VideosApi', {
+    videosActions.__Rewire__('VideosApi', {
       getAll: function getAll() {
         return Promise.resolve(MOCK_RESPONSE);
       }
@@ -24,25 +24,25 @@ describe('Actions: VideoActions', function() {
   afterEach(function() {
     sandbox.restore();
 
-    videoActions.__ResetDependency__('VideosApi');
+    videosActions.__ResetDependency__('VideosApi');
   });
 
   describe('#fetchVideos', function() {
     it('fetches videos from videos api', function(done) {
       var dispatcherSpy = sandbox.spy(alt.dispatcher, 'dispatch');
 
-      videoActions
+      videosActions
         .fetchVideos()
           .then(function() {
             var dispatcherArgs = dispatcherSpy.args;
             expect(dispatcherSpy).to.be.calledTwice;
 
             var firstDispatchArgs = dispatcherArgs[0][0];
-            expect(firstDispatchArgs.action, '1st dispatch: action name did not match').to.equal('VideoActions.fetchVideos');
+            expect(firstDispatchArgs.action, '1st dispatch: action name did not match').to.equal('VideosActions.fetchVideos');
             expect(firstDispatchArgs.data, '1st dispatch: data did not match').to.not.exist;
 
             var secondDispatchArgs = dispatcherArgs[1][0];
-            expect(secondDispatchArgs.action, '2nd dispatch: action name did not match').to.equal('VideoActions.updateVideos');
+            expect(secondDispatchArgs.action, '2nd dispatch: action name did not match').to.equal('VideosActions.updateVideos');
             expect(secondDispatchArgs.data, '2nd dispatch: data did not match').to.eql(MOCK_RESPONSE);
           })
           .then(done)
@@ -55,13 +55,13 @@ describe('Actions: VideoActions', function() {
       var mockPayload = [{test: '123'}];
       var dispatcherSpy = sandbox.spy(alt.dispatcher, 'dispatch');
 
-      videoActions.updateVideos(mockPayload);
+      videosActions.updateVideos(mockPayload);
 
       var dispatcherArgs = dispatcherSpy.args;
       expect(dispatcherSpy).to.be.calledOnce;
 
       var firstDispatchArgs = dispatcherArgs[0][0];
-      expect(firstDispatchArgs.action, '1st dispatch: action name did not match').to.equal('VideoActions.updateVideos');
+      expect(firstDispatchArgs.action, '1st dispatch: action name did not match').to.equal('VideosActions.updateVideos');
       expect(firstDispatchArgs.data, '1st dispatch: data did not match').to.eql(mockPayload);
     });
   });

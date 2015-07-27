@@ -1,12 +1,12 @@
 var alt = require('../alt');
-var videoActions = require('../actions/VideoActions');
+var videosActions = require('../actions/VideosActions');
 
 var VideosStore = {
   displayName: 'VideosStore',
 
   bindListeners: {
-    onFetchVideos: videoActions.fetchVideos,
-    onUpdateVideos: videoActions.updateVideos
+    onFetchVideos: videosActions.fetchVideos,
+    onUpdateVideos: videosActions.updateVideos
   },
 
   state: {

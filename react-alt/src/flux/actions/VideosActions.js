@@ -2,7 +2,7 @@ var alt = require('../alt');
 var VideosApi = require('../../utils/VideosApi');
 
 module.exports = alt.createActions({
-  displayName: 'VideoActions',
+  displayName: 'VideosActions',
 
   fetchVideos: function() {
     this.dispatch();
