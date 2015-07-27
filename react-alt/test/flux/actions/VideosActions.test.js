@@ -2,16 +2,14 @@ var alt = require('app/flux/alt');
 var videosActions = require('app/flux/actions/VideosActions');
 
 var MOCK_RESPONSE = [
-  {source: 'test.local/1', name: 'TEST', id: '1', ts: 'T1'},
-  {source: 'test.local/2', name: 'TEST2', id: '2', ts: 'T2'}
+  {source: '//test.local/1a', name: 'TEST', id: '1', ts: 'T1'},
+  {source: '//test.local/2a', name: 'TEST2', id: '2', ts: 'T2'}
 ];
 
 describe('Actions: VideosActions', function() {
   var sandbox;
 
   beforeEach(function() {
-    alt.recycle();
-
     sandbox = sinon.sandbox.create();
 
     videosActions.__Rewire__('VideosApi', {
@@ -25,6 +23,8 @@ describe('Actions: VideosActions', function() {
     sandbox.restore();
 
     videosActions.__ResetDependency__('VideosApi');
+
+    alt.recycle();
   });
 
   describe('#fetchVideos', function() {
@@ -63,6 +63,8 @@ describe('Actions: VideosActions', function() {
       var firstDispatchArgs = dispatcherArgs[0][0];
       expect(firstDispatchArgs.action, '1st dispatch: action name did not match').to.equal('VideosActions.updateVideos');
       expect(firstDispatchArgs.data, '1st dispatch: data did not match').to.eql(mockPayload);
+
+      videosActions.updateVideos([]);
     });
   });
 });

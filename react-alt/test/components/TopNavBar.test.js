@@ -7,20 +7,32 @@ var eventNoop = {
 };
 
 describe('TopNavBar', function() {
+  var component;
+
+  beforeEach(function() {
+    component = null;
+  });
+
+  afterEach(function() {
+    if (component) {
+      React.unmountComponentAtNode(React.findDOMNode(component).parentNode);
+    }
+  });
+
   describe('on initial render', function() {
     it('renders: a nav element', function() {
       var shallowRenderer = ReactTestUtils.createRenderer();
       shallowRenderer.render(<TopNavBar />);
 
-      var component = shallowRenderer.getRenderOutput();
-      expect(component.type).to.equal('nav');
-      expect(component.props.className).to.equal('navbar navbar-default navbar-static-top');
+      var shallowComponent = shallowRenderer.getRenderOutput();
+      expect(shallowComponent.type).to.equal('nav');
+      expect(shallowComponent.props.className).to.equal('navbar navbar-default navbar-static-top');
     });
   });
 
   describe('on click (endless mode)', function() {
     it('toggles: "active" class', function() {
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <TopNavBar endlessMode />
       );
 
@@ -37,7 +49,7 @@ describe('TopNavBar', function() {
 
   describe('on click (collapse nav)', function() {
     it('toggles: "navbar-collapse" and "collapse" classes', function() {
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <TopNavBar />
       );
 
@@ -57,7 +69,7 @@ describe('TopNavBar', function() {
         done();
       };
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <TopNavBar onEndlessModeClick={callback} />
       );
 
@@ -65,7 +77,7 @@ describe('TopNavBar', function() {
     });
 
     it('#handleCollapseNavClick', function() {
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <TopNavBar />
       );
 

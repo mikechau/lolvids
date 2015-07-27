@@ -10,10 +10,10 @@ var data = {
   endIndex: 9000
 };
 
-var component;
-var domNode;
-
 describe('VideoStage: Metadata', function() {
+  var component;
+  var domNode;
+
   describe('on initial render', function() {
     beforeEach(function() {
       component = ReactTestUtils.renderIntoDocument(
@@ -27,6 +27,10 @@ describe('VideoStage: Metadata', function() {
       );
 
       domNode = React.findDOMNode(component);
+    });
+
+    afterEach(function() {
+      React.unmountComponentAtNode(React.findDOMNode(component).parentNode);
     });
 
     it('renders: a title', function() {

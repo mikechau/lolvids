@@ -3,11 +3,11 @@ var videosStore = require('app/flux/stores/VideosStore').videosStore;
 var videosActions = require('app/flux/actions/VideosActions');
 
 var VIDEOS_MOCK_PAYLOAD = [
-  {source: 'test.local/1'}
+  {source: '//test.local/1s'}
 ];
 
 describe('Store: VideosStore', function() {
-  beforeEach(function() {
+  afterEach(function() {
     alt.recycle();
   });
 
