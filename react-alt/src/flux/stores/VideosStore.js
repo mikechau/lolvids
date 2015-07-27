@@ -1,8 +1,8 @@
 var alt = require('../alt');
 var videoActions = require('../actions/VideoActions');
 
-var VideoStore = {
-  displayName: 'VideoStore',
+var VideosStore = {
+  displayName: 'VideosStore',
 
   bindListeners: {
     handleFetchVideos: videoActions.fetchVideos,
@@ -29,6 +29,6 @@ var VideoStore = {
 };
 
 module.exports = {
-  videoStore: alt.createStore(VideoStore),
-  VideoStore: VideoStore
+  videosStore: alt.createStore(VideosStore),
+  VideosStore: VideosStore
 };

@@ -1,12 +1,12 @@
 var alt = require('app/flux/alt');
-var videoStore = require('app/flux/stores/VideoStore').videoStore;
+var videosStore = require('app/flux/stores/VideosStore').videosStore;
 var videoActions = require('app/flux/actions/VideoActions');
 
 var VIDEOS_MOCK_PAYLOAD = [
   {source: 'test.local/1'}
 ];
 
-describe('Store: VideoStore', function() {
+describe('Store: VideosStore', function() {
   beforeEach(function() {
     alt.recycle();
   });
@@ -14,7 +14,7 @@ describe('Store: VideoStore', function() {
   it('listens for a fetch videos action', function() {
     alt.dispatcher.dispatch({action: videoActions.FETCH_VIDEOS});
 
-    var state = videoStore.getState();
+    var state = videosStore.getState();
 
     expect(state.loading, 'loading is not true').to.be.true;
     expect(state.videos, 'videos are not empty').to.be.empty;
@@ -23,7 +23,7 @@ describe('Store: VideoStore', function() {
   it('listens for a update videos action', function() {
     alt.dispatcher.dispatch({action: videoActions.UPDATE_VIDEOS, data: VIDEOS_MOCK_PAYLOAD});
 
-    var state = videoStore.getState();
+    var state = videosStore.getState();
 
     expect(state.loading, 'loading is not false').to.be.false;
     expect(state.videos, 'videos does not match').to.eql(VIDEOS_MOCK_PAYLOAD);
