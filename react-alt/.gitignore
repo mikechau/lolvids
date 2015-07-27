@@ -1,0 +1,7 @@
+build/*
+node_modules/*
+*.log
+*.swp
+*.sublime-project
+*.sublime-workspace
+
