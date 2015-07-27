@@ -54,7 +54,7 @@ var config = _.merge(
   }),
   {
     output: {
-      publicPath: '/react/assets/',
+      publicPath: '/react-alt/assets/',
       filename: '[name]-[hash].js'
     },
     cache: false,
