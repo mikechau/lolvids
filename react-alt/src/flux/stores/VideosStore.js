@@ -5,8 +5,8 @@ var VideosStore = {
   displayName: 'VideosStore',
 
   bindListeners: {
-    handleFetchVideos: videoActions.fetchVideos,
-    handleUpdateVideos: videoActions.updateVideos
+    onFetchVideos: videoActions.fetchVideos,
+    onUpdateVideos: videoActions.updateVideos
   },
 
   state: {
@@ -14,13 +14,13 @@ var VideosStore = {
     videos: []
   },
 
-  handleFetchVideos: function() {
+  onFetchVideos: function() {
     this.setState({
       loading: true
     });
   },
 
-  handleUpdateVideos: function(videos) {
+  onUpdateVideos: function(videos) {
     this.setState({
       loading: false,
       videos: videos
