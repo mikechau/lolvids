@@ -41,6 +41,7 @@ describe('VideoStage: Video', function() {
 
     it('renders: with default vjs classes', function() {
       component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
       var domNode = React.findDOMNode(component);
       var vjsNode = domNode.parentElement;
 

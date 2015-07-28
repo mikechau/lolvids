@@ -40,6 +40,7 @@ describe('VideoStage', function() {
   describe('on initial render', function() {
     it('renders: a video component', function() {
       component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+
       var videoComponent = ReactTestUtils.findRenderedComponentWithType(component, Video);
 
       expect(videoComponent).to.be.instanceOf(Video);
@@ -47,6 +48,7 @@ describe('VideoStage', function() {
 
     it('renders: a metadata component', function() {
       component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+
       var metadataComponent = ReactTestUtils.findRenderedComponentWithType(component, Metadata);
 
       expect(metadataComponent).to.be.instanceOf(Metadata);

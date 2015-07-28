@@ -65,6 +65,8 @@ describe('Application', function() {
 
   describe('on component did mount', function() {
     it('calls: #fetchVideos action', function() {
+      sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
+
       var fetchVideosSpy = sandbox.spy(videosActions, 'fetchVideos');
 
       component = ReactTestUtils.renderIntoDocument(<Application />);
@@ -93,9 +95,7 @@ describe('Application', function() {
 
   describe('component handlers', function() {
     it('#handleEndlessModeClick', function() {
-      sandbox.stub(Application.prototype, 'componentDidMount', function() {
-        return true;
-      });
+      sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
 
       component = ReactTestUtils.renderIntoDocument(<Application />);
 

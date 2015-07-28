@@ -16,6 +16,7 @@ describe('VideoStage: Metadata', function() {
 
   describe('on initial render', function() {
     beforeEach(function() {
+      component = null;
       component = ReactTestUtils.renderIntoDocument(
         <Metadata
           title={data.title}

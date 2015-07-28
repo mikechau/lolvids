@@ -35,8 +35,14 @@ describe('VideoStage: TransitionButton', function() {
   describe('on click', function() {
     var component;
 
+    beforeEach(function() {
+      component = null;
+    });
+
     afterEach(function() {
-      React.unmountComponentAtNode(React.findDOMNode(component).parentNode);
+      if (component) {
+        React.unmountComponentAtNode(React.findDOMNode(component).parentNode);
+      }
     });
 
     it('calls: a onClick callback', function(done) {
