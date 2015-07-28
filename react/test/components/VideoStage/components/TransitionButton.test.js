@@ -33,12 +33,24 @@ describe('VideoStage: TransitionButton', function() {
   });
 
   describe('on click', function() {
+    var component;
+
+    beforeEach(function() {
+      component = null;
+    });
+
+    afterEach(function() {
+      if (component) {
+        React.unmountComponentAtNode(React.findDOMNode(component).parentNode);
+      }
+    });
+
     it('calls: a onClick callback', function(done) {
       var doneOp = function() {
         done();
       };
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <TransitionButton direction="right" onClick={doneOp} />
       );
       var domNode = React.findDOMNode(component);

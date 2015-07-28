@@ -7,22 +7,30 @@ var TEST_VIDEO = require('app/assets/test.mp4');
 
 describe('VideoStage: Video', function() {
   var sandbox;
+  var component;
 
   beforeEach(function() {
     Video.__Rewire__('_debounce', function(func) { return func; });
 
     sandbox = sinon.sandbox.create();
+
+    component = null;
   });
 
   afterEach(function() {
     Video.__ResetDependency__('_debounce');
 
     sandbox.restore();
+
+    if (component) {
+      React.unmountComponentAtNode(React.findDOMNode(component).parentNode);
+    }
   });
 
   describe('on initial render', function() {
     it('renders: a videojs video player', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
       var domNode = React.findDOMNode(component);
       var vjsNode = domNode.parentElement;
 
@@ -32,7 +40,8 @@ describe('VideoStage: Video', function() {
     });
 
     it('renders: with default vjs classes', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
       var domNode = React.findDOMNode(component);
       var vjsNode = domNode.parentElement;
 
@@ -43,11 +52,11 @@ describe('VideoStage: Video', function() {
       var shallowRenderer = ReactTestUtils.createRenderer();
       shallowRenderer.render(<Video src={TEST_VIDEO} />);
 
-      var component = shallowRenderer.getRenderOutput();
+      var shallowComponent = shallowRenderer.getRenderOutput();
 
-      expect(component.props.children.type).to.equal('p');
-      expect(component.props.children.props.className).to.equal('vjs-no-js');
-      expect(component.props.children.props.children[0]).to.contain('To view this video please enable JavaScript');
+      expect(shallowComponent.props.children.type).to.equal('p');
+      expect(shallowComponent.props.children.props.className).to.equal('vjs-no-js');
+      expect(shallowComponent.props.children.props.children[0]).to.contain('To view this video please enable JavaScript');
     });
 
     it('renders: a custom warning', function() {
@@ -60,11 +69,11 @@ describe('VideoStage: Video', function() {
         </Video>
       );
 
-      var component = shallowRenderer.getRenderOutput();
+      var shallowComponent = shallowRenderer.getRenderOutput();
 
-      expect(component.props.children.type).to.equal('div');
-      expect(component.props.children.props.className).to.equal('test');
-      expect(component.props.children.props.children).to.equal('ERROR TEST MESSAGE!');
+      expect(shallowComponent.props.children.type).to.equal('div');
+      expect(shallowComponent.props.children.props.className).to.equal('test');
+      expect(shallowComponent.props.children.props.children).to.equal('ERROR TEST MESSAGE!');
     });
   });
 
@@ -72,7 +81,7 @@ describe('VideoStage: Video', function() {
     it('mounts: videojs', function() {
       var mountVideoPlayerSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'mountVideoPlayer');
 
-      ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       expect(mountVideoPlayerSpy).to.have.been.calledOnce;
     });
@@ -82,7 +91,7 @@ describe('VideoStage: Video', function() {
     it('attaches: a videojs event listener', function(done) {
       var callback = function() { done(); };
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           eventListeners={{
@@ -97,7 +106,7 @@ describe('VideoStage: Video', function() {
     it('calls: on ready callback', function(done) {
       var callback = function() { done(); };
 
-      ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           onReady={callback}
@@ -110,7 +119,7 @@ describe('VideoStage: Video', function() {
     it('ignores: src not changing', function() {
       var srcSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'setVideoPlayerSrc');
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
         />
@@ -126,7 +135,8 @@ describe('VideoStage: Video', function() {
     it('ignores: endlessMode not changing', function() {
       var endlessModeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addEndlessMode');
       var nextVideoSpy = sandbox.spy();
-      var component = ReactTestUtils.renderIntoDocument(
+
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           endlessMode
@@ -147,7 +157,8 @@ describe('VideoStage: Video', function() {
 
     it('ignores: resize not changing', function() {
       var resizeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addResizeEventListener');
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} resize />);
+
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} resize />);
 
       component.setProps({
         resize: true
@@ -158,7 +169,8 @@ describe('VideoStage: Video', function() {
 
     it('responds: to src not changing and endless mode not changing', function() {
       var restartSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'restartVideo');
-      var component = ReactTestUtils.renderIntoDocument(
+
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           endless
@@ -174,7 +186,8 @@ describe('VideoStage: Video', function() {
 
     it('responds: to src change', function() {
       var srcSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'setVideoPlayerSrc');
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.setProps({
         src: TEST_VIDEO + '?q=1337'
@@ -186,7 +199,8 @@ describe('VideoStage: Video', function() {
     it('responds: to endlessMode change', function() {
       var endlessModeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addEndlessMode');
       var nextVideoSpy = sandbox.spy();
-      var component = ReactTestUtils.renderIntoDocument(
+
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           onNextVideo={nextVideoSpy}
@@ -208,7 +222,8 @@ describe('VideoStage: Video', function() {
 
     it('responds: to resize change', function() {
       var resizeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addResizeEventListener');
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.setProps({
         resize: true
@@ -219,7 +234,8 @@ describe('VideoStage: Video', function() {
 
     it('toggles: endlessMode', function() {
       var endlessModeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'removeEndlessMode');
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} endlessMode />);
+
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} endlessMode />);
 
       component.setProps({
         endlessMode: false
@@ -230,7 +246,8 @@ describe('VideoStage: Video', function() {
 
     it('toggles: resize', function() {
       var resizeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'removeResizeEventListener');
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} resize />);
+
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} resize />);
 
       component.setProps({
         resize: false
@@ -244,9 +261,11 @@ describe('VideoStage: Video', function() {
     it('unmounts: videojs player', function() {
       var unmountVideoPlayerSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'unmountVideoPlayer');
       var resizeSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'removeResizeEventListener');
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
-      var domNode = React.findDOMNode(component);
-      var vjsId = component.getVideoPlayer().id();
+
+      var reactComponent = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
+      var domNode = React.findDOMNode(reactComponent);
+      var vjsId = reactComponent.getVideoPlayer().id();
 
       React.unmountComponentAtNode(domNode.parentNode);
 
@@ -277,7 +296,7 @@ describe('VideoStage: Video', function() {
           .onFirstCall().returns(600)
           .onSecondCall().returns(400);
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           resize
@@ -303,7 +322,7 @@ describe('VideoStage: Video', function() {
     it('calls: next video callback when endless mode is enabled', function(done) {
       var callback = function() { done(); };
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           endlessMode
@@ -317,7 +336,7 @@ describe('VideoStage: Video', function() {
     it('ignores: next video callback when endless mode is disabled', function() {
       var callback = sandbox.spy();
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           onNextVideo={callback}
@@ -331,19 +350,19 @@ describe('VideoStage: Video', function() {
 
   describe('component methods', function() {
     it('#getVideoPlayer', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       expect(component.getVideoPlayer()).to.exist;
     });
 
     it('#getVideoPlayerEl', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       expect(component.getVideoPlayerEl().nodeName).to.equal('VIDEO');
     });
 
     it('#getVideoPlayerOptions', function() {
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           resize
@@ -365,7 +384,7 @@ describe('VideoStage: Video', function() {
     });
 
     it('#getVideoResizeOptions', function() {
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           resize
@@ -394,7 +413,7 @@ describe('VideoStage: Video', function() {
         defaultVideoWidthAdjustment: 100
       };
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           resizeOptions={resizeOptions}
@@ -411,7 +430,8 @@ describe('VideoStage: Video', function() {
 
     it('#setVideoPlayerSrc', function() {
       var NEW_VIDEO = TEST_VIDEO + '?q=1337';
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.setVideoPlayerSrc(NEW_VIDEO);
 
@@ -419,7 +439,7 @@ describe('VideoStage: Video', function() {
     });
 
     it('#pauseVideo', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.pauseVideo();
 
@@ -427,7 +447,7 @@ describe('VideoStage: Video', function() {
     });
 
     it('#playVideo', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.pauseVideo();
       component.playVideo();
@@ -436,7 +456,7 @@ describe('VideoStage: Video', function() {
     });
 
     it('#restartVideo', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.pauseVideo();
       component.restartVideo();
@@ -445,7 +465,7 @@ describe('VideoStage: Video', function() {
     });
 
     it('#togglePauseVideo', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
+      component = ReactTestUtils.renderIntoDocument(<Video src={TEST_VIDEO} />);
 
       component.getVideoPlayer().pause();
       component.togglePauseVideo();
@@ -464,7 +484,7 @@ describe('VideoStage: Video', function() {
       var handleResizeEventListenerSpy = sandbox.spy(Video.prototype.__reactAutoBindMap, 'addResizeEventListener');
       var readyCallback = sandbox.spy();
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           resize
@@ -484,7 +504,7 @@ describe('VideoStage: Video', function() {
       sandbox.stub(Video.prototype.__reactAutoBindMap, '_videoElementWidth').returns(800);
       sandbox.stub(Video.prototype.__reactAutoBindMap, '_windowHeight').returns(600);
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           resize
@@ -507,7 +527,7 @@ describe('VideoStage: Video', function() {
         done();
       };
 
-      var component = ReactTestUtils.renderIntoDocument(
+      component = ReactTestUtils.renderIntoDocument(
         <Video
           src={TEST_VIDEO}
           onNextVideo={callback}

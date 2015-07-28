@@ -21,31 +21,43 @@ var RESPONSE = {
 
 describe('Application', function() {
   var sandbox;
+  var component;
 
   beforeEach(function() {
     Application.__Rewire__('fetch', function() { return Promise.resolve(RESPONSE); });
 
     sandbox = sinon.sandbox.create();
+
+    component = null;
   });
 
   afterEach(function() {
     Application.__ResetDependency__('fetch');
 
     sandbox.restore();
+
+    if (component) {
+      React.unmountComponentAtNode(React.findDOMNode(component).parentNode);
+    }
   });
 
   describe('on initial render', function() {
     it('renders: a top nav bar component', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Application />);
+      sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
+
+      component = ReactTestUtils.renderIntoDocument(<Application />);
+
       var topNavBarComponent = ReactTestUtils.findRenderedComponentWithType(component, TopNavBar);
 
       expect(topNavBarComponent).to.be.instanceOf(TopNavBar);
     });
 
     it('renders: a spinner component when loading', function() {
+      sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
       sandbox.stub(Application.prototype.__reactAutoBindMap, 'fetchVideos').returns(true);
 
-      var component = ReactTestUtils.renderIntoDocument(<Application />);
+      component = ReactTestUtils.renderIntoDocument(<Application />);
+
       var spinnerComponent = ReactTestUtils.findRenderedComponentWithType(component, Spinner);
 
       expect(spinnerComponent).to.be.instanceOf(Spinner);
@@ -56,16 +68,17 @@ describe('Application', function() {
     it('calls: #fetchVideos', function(done) {
       sandbox.stub(Application.prototype.__reactAutoBindMap, 'fetchVideos').returns(done());
 
-      ReactTestUtils.renderIntoDocument(<Application />);
+      component = ReactTestUtils.renderIntoDocument(<Application />);
     });
   });
 
   describe('on fetch videos (success)', function() {
-    it('calls: #setVideosSpyeos', function(done) {
+    it('calls: #setVideos', function(done) {
       sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
 
       var setVideosSpy = sandbox.spy(Application.prototype.__reactAutoBindMap, 'setVideos');
-      var component = ReactTestUtils.renderIntoDocument(<Application />);
+
+      component = ReactTestUtils.renderIntoDocument(<Application />);
 
       var checkForSetVideosCall = function() {
         expect(setVideosSpy).to.be.calledOnce;
@@ -80,7 +93,7 @@ describe('Application', function() {
     it('renders: a video stage component', function(done) {
       sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
 
-      var component = ReactTestUtils.renderIntoDocument(<Application />);
+      component = ReactTestUtils.renderIntoDocument(<Application />);
 
       var checkForVideoStage = function() {
         var videoStageComponent = ReactTestUtils.findRenderedComponentWithType(component, VideoStage);
@@ -96,7 +109,9 @@ describe('Application', function() {
 
   describe('component methods', function() {
     it('#setVideos', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Application />);
+      sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
+
+      component = ReactTestUtils.renderIntoDocument(<Application />);
 
       component.setVideos([]);
 
@@ -106,7 +121,9 @@ describe('Application', function() {
 
   describe('component handlers', function() {
     it('#handleEndlessModeClick', function() {
-      var component = ReactTestUtils.renderIntoDocument(<Application />);
+      sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
+
+      component = ReactTestUtils.renderIntoDocument(<Application />);
 
       component.handleEndlessModeClick();
 
