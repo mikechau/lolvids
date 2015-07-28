@@ -65,8 +65,6 @@ describe('Application', function() {
 
   describe('on component did mount', function() {
     it('calls: #fetchVideos action', function() {
-      sandbox.stub(Application.prototype, 'componentDidMount').returns(true);
-
       var fetchVideosSpy = sandbox.spy(videosActions, 'fetchVideos');
 
       component = ReactTestUtils.renderIntoDocument(<Application />);
