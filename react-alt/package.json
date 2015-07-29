@@ -7,7 +7,7 @@
     "assets:serve": "NODE_ENV=development webpack-dev-server --config ./webpack.hot.assets.config.js --hot --progress --colors --port 2992 --inline --host 0.0.0.0",
     "karma": "karma start",
     "karma:watch": "npm run karma -- --auto-watch --no-single-run",
-    "karma:all": "npm run karma -- --browsers=PhantomJS,Chrome,Firefox",
+    "karma:all": "npm run karma -- --browsers=Chrome,Firefox",
     "package:purge": "rm -rf node_modules",
     "package:reinstall": "npm run package:purge && npm install",
     "package:updates": "npm-check-updates -f '/^(?!npm-shrinkwrap|jsdom).*$/'",
@@ -17,9 +17,6 @@
     "shrinkwrap:remove": "rm npm-shrinkwrap.json",
     "shrinkwrap:rebuild": "npm run shrinkwrap:remove && npm run package:reinstall && npm run shrinkwrap:build",
     "shrinkwrap:upgrade": "npm upgrade npm-shrinkwrap@200 --save-dev",
-    "spec": "mocha ./test/**/*.spec.js --reporter spec --timeout 15000 --bail --require ./test/_lib/bootstrap.js",
-    "spec:watch": "npm run spec -- -w",
-    "spec:watch:browser": "npm run spec:watch -- 2>&1 --bail --require ./test/_lib/bootstrap.js | report-viewer --port 9123",
     "test": "npm run karma",
     "test:integration": "./integration/run.js --bail"
   },
