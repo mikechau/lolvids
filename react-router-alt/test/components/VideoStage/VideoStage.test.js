@@ -4,19 +4,17 @@ var VideoStage = require('app/components/VideoStage');
 var Video = require('app/components/VideoStage/components/Video');
 var Metadata = require('app/components/VideoStage/components/Metadata');
 
-var VIDEO = require('app/assets/test.mp4');
+var TEST_VIDEO_SOURCE = require('app/assets/test.mp4');
 
 var LEFT_KEY = 37;
 var RIGHT_KEY = 39;
 var SPACEBAR_KEY = 32;
 
-var VIDEOS = [
-  {source: VIDEO},
-  {source: VIDEO + '?q=1337'}
-];
-
-var noopEvent = {
-  preventDefault: function() {}
+var VIDEO = {
+  source: TEST_VIDEO_SOURCE,
+  name: 'test video',
+  ts: 'test_time',
+  id: 'test_video_01'
 };
 
 describe('VideoStage', function() {
@@ -39,7 +37,14 @@ describe('VideoStage', function() {
 
   describe('on initial render', function() {
     it('renders: a video component', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+        />
+      );
 
       var videoComponent = ReactTestUtils.findRenderedComponentWithType(component, Video);
 
@@ -47,7 +52,14 @@ describe('VideoStage', function() {
     });
 
     it('renders: a metadata component', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+        />
+      );
 
       var metadataComponent = ReactTestUtils.findRenderedComponentWithType(component, Metadata);
 
@@ -59,7 +71,14 @@ describe('VideoStage', function() {
     it('attaches: key events', function() {
       var keySpy = sandbox.spy(VideoStage.prototype.__reactAutoBindMap, 'addKeyEvents');
 
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+        />
+      );
 
       expect(keySpy).to.be.calledOnce;
     });
@@ -70,7 +89,14 @@ describe('VideoStage', function() {
       var keySpy = sandbox.spy(VideoStage.prototype.__reactAutoBindMap, 'removeKeyEvents');
       var nextSpy = sandbox.spy(VideoStage.prototype.__reactAutoBindMap, 'handleNext');
 
-      var reactComponent = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+      var reactComponent = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+        />
+      );
 
       var domNode = React.findDOMNode(reactComponent);
 
@@ -88,36 +114,55 @@ describe('VideoStage', function() {
   });
 
   describe('on window events', function() {
-    it('calls: next video on right arrow keypress', function() {
-      var nextSpy = sandbox.spy(VideoStage.prototype.__reactAutoBindMap, 'handleNext');
-
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+    it('calls: next video on right arrow keypress', function(done) {
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+          onNextVideo={function() {
+            done();
+          }}
+        />
+      );
 
       var keyboardEvent = document.createEvent('HTMLEvents');
       keyboardEvent.initEvent('keydown', true, true);
       keyboardEvent.keyCode = RIGHT_KEY;
       document.body.dispatchEvent(keyboardEvent);
-
-      expect(nextSpy).to.be.calledOnce;
     });
 
-    it('calls: previous video on left arrow keypress', function() {
-      var previousSpy = sandbox.spy(VideoStage.prototype.__reactAutoBindMap, 'handlePrevious');
-
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+    it('calls: previous video on left arrow keypress', function(done) {
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+          onPreviousVideo={function() {
+            done();
+          }}
+        />
+      );
 
       var keyboardEvent = document.createEvent('HTMLEvents');
       keyboardEvent.initEvent('keydown', true, true);
       keyboardEvent.keyCode = LEFT_KEY;
       document.body.dispatchEvent(keyboardEvent);
-
-      expect(previousSpy).to.be.calledOnce;
     });
 
     it('calls: pause on spacebar keypress', function() {
       var pauseSpy = sandbox.spy(VideoStage.prototype.__reactAutoBindMap, 'handlePause');
 
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+        />
+      );
 
       var keyboardEvent = document.createEvent('HTMLEvents');
       keyboardEvent.initEvent('keydown', true, true);
@@ -128,77 +173,48 @@ describe('VideoStage', function() {
     });
   });
 
-  describe('component methods', function() {
-    it('#getCurrentVideo', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
-
-      expect(component.getCurrentVideo(), 'it did not get the first video').to.equal(VIDEOS[0]);
-
-      component.setState({
-        currentVideoIndex: 1
-      });
-
-      expect(component.getCurrentVideo(), 'it did not get the second video').to.equal(VIDEOS[1]);
-    });
-
-    it('#getTotalVideos', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
-
-      expect(component.getTotalVideos()).to.equal(1);
-    });
-
-    it('#getVideoCounterStart', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
-
-      expect(component.getVideoCounterStart()).to.equal(1);
-    });
-
-    it('#getVideoCounterEnd', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
-
-      expect(component.getVideoCounterEnd()).to.equal(2);
-    });
-
-    it('#setCurrentVideoIndex', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
-
-      component.setCurrentVideoIndex(1);
-
-      expect(component.getCurrentVideo(), 'it did not get the second video').to.equal(VIDEOS[1]);
-    });
-  });
-
   describe('component handlers', function() {
-    it('#handleNext', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+    it('#handleNext', function(done) {
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+          onNextVideo={done}
+        />
+      );
 
-      component.handleNext(noopEvent);
-
-      expect(component.state.currentVideoIndex, 'it did not increment').to.equal(1);
-
-      component.handleNext(noopEvent);
-
-      expect(component.state.currentVideoIndex, 'it did not go to the beginning').to.equal(0);
+      component.handleNext();
     });
 
-    it('#handlePrevious', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+    it('#handlePrevious', function(done) {
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+          onPreviousVideo={done}
+        />
+      );
 
-      component.handlePrevious(noopEvent);
-
-      expect(component.state.currentVideoIndex, 'it did not go to the end').to.equal(1);
-
-      component.handlePrevious(noopEvent);
-
-      expect(component.state.currentVideoIndex, 'it did not decrement').to.equal(0);
+      component.handlePrevious();
     });
 
     it('#handlePause', function() {
-      component = ReactTestUtils.renderIntoDocument(<VideoStage videos={VIDEOS} />);
+      component = ReactTestUtils.renderIntoDocument(
+        <VideoStage
+          endlessMode={false}
+          video={VIDEO}
+          startCounter={1}
+          endCounter={1}
+        />
+      );
 
       var pauseSpy = sandbox.spy(component.refs.videoPlayer, 'togglePauseVideo');
 
-      component.handlePause(noopEvent);
+      component.handlePause();
 
       expect(pauseSpy).to.be.calledOnce;
     });

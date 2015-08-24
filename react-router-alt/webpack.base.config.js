@@ -34,7 +34,7 @@ module.exports = function(customConfig) {
   var plugins = [
     new webpack.DefinePlugin({
       'process.env': {
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV || customConfig.nodeEnv || 'development')
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || customConfig.nodeEnv || 'development')
       }
     }),
     new webpack.NoErrorsPlugin()

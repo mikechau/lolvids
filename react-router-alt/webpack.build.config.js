@@ -29,7 +29,7 @@ var config = _.merge(
       new ExtractTextPlugin('[name]-[hash].css'),
       new webpack.NoErrorsPlugin(),
       new HtmlWebpackPlugin({
-        title: 'lolvids: react',
+        title: 'lolvids: react-router-alt',
         description: 'lolvids react example',
         filename: '../index.html',
         minify: {
@@ -54,7 +54,7 @@ var config = _.merge(
   }),
   {
     output: {
-      publicPath: '/react-alt/assets/',
+      publicPath: '/react-router-alt/assets/',
       filename: '[name]-[hash].js'
     },
     cache: false,

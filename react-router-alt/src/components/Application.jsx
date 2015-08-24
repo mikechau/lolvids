@@ -3,9 +3,18 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 
 var TopNavBar = require('./TopNavBar');
-var VideosContainer = require('./VideosContainer');
 
 var Application = React.createClass({
+  propTypes: {
+    router: React.PropTypes.object
+  },
+
+  getDefaultProps: function() {
+    return {
+      router: {}
+    };
+  },
+
   getInitialState: function() {
     return {
       endlessMode: true
@@ -27,7 +36,7 @@ var Application = React.createClass({
         />
 
         <div className="container">
-          <VideosContainer endlessMode={this.state.endlessMode} />
+          <RouteHandler endlessMode={this.state.endlessMode} router={this.props.router} />
         </div>
       </div>
     );

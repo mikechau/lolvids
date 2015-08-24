@@ -1,5 +1,6 @@
 var alt = require('../alt');
 var videosActions = require('../actions/VideosActions');
+var _findIndex = require('lodash/array/findIndex');
 
 var VideosStore = {
   displayName: 'VideosStore',
@@ -23,9 +24,37 @@ var VideosStore = {
         loading: this.StoreModel.state.loading,
         video: this.StoreModel.getCurrentVideo(),
         startCounter: this.StoreModel.getStartCounter(),
-        endCounter: this.StoreModel.getEndCounter()
+        endCounter: this.StoreModel.getEndCounter(),
+        nextVideoId: this.StoreModel.getNextVideo('id'),
+        previousVideoId: this.StoreModel.getPreviousVideo('id')
+      };
+    },
+
+    getVideoStateById: function(id) {
+      var video = this.StoreModel.getVideoWithIndexById(id);
+      var index = video.index;
+
+      return {
+        loading: this.StoreModel.state.loading,
+        video: video.video,
+        startCounter: video.startCounter,
+        endCounter: this.StoreModel.getEndCounter(),
+        nextVideoId: this.StoreModel.getNextVideo('id', index + 1),
+        previousVideoId: this.StoreModel.getPreviousVideo('id', index - 1)
       };
     }
+  },
+
+  getVideoWithIndexById: function(id) {
+    var videos = this.state.videos;
+    var index = _findIndex(videos, {id: id});
+    var video = videos[index];
+
+    return {
+      startCounter: index + 1,
+      video: video,
+      index: index
+    };
   },
 
   getCurrentVideo: function() {
@@ -45,21 +74,40 @@ var VideosStore = {
     return this.state.videos.length;
   },
 
-  getNextIndex: function() {
-    var nextIndex = this.state.currentIndex + 1;
+  getNextVideo: function(attr, index) {
+    var nextIndex = this.getNextIndex(index);
+    var video = this.state.videos[nextIndex] || {};
 
-    if ((nextIndex > -1) && (nextIndex <= this.getVideosCount())) {
+    return attr ? video[attr] : video;
+  },
+
+  getPreviousVideo: function(attr, index) {
+    var previousIndex = this.getPreviousIndex(index);
+    var video = this.state.videos[previousIndex] || {};
+
+    return attr ? video[attr] : video;
+  },
+
+  getNextIndex: function(index) {
+    var nextIndex = index || 0;
+
+    if ((nextIndex > 0) && (nextIndex <= this.getVideosCount())) {
       return nextIndex;
+    } else if (nextIndex === 0) {
+      return 1;
     } else {
       return 0;
     }
   },
 
-  getPreviousIndex: function() {
-    var prevIndex = this.state.currentIndex - 1;
+  getPreviousIndex: function(index) {
+    var videosCount = this.getVideosCount();
+    var prevIndex = index || 0;
 
-    if (prevIndex < 0) {
-      return this.getVideosCount();
+    if (prevIndex < -1) {
+      return 0;
+    } else if (prevIndex === 0) {
+      return videosCount;
     } else {
       return prevIndex;
     }

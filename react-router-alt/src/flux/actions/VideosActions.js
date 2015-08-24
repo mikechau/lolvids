@@ -4,12 +4,12 @@ var VideosApi = require('../../utils/VideosApi');
 module.exports = alt.createActions({
   displayName: 'VideosActions',
 
-  fetchVideos: function() {
+  fetchVideos: function(videoId) {
     this.dispatch();
 
-    return VideosApi
-      .getAll()
-      .then(this.actions.updateVideos);
+    var request = videoId ? VideosApi.getWithAll(videoId) : VideosApi.getAll();
+
+    return request.then(this.actions.updateVideos);
   },
 
   updateVideos: function(videos) {

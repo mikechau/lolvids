@@ -55,12 +55,12 @@ var TopNavBar = React.createClass({
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="/react-alt">lolvids-react-alt</a>
+            <a className="navbar-brand" href="/react-router-alt">lolvids-react-alt</a>
           </div>
 
           <div ref="collapsedNavMenuOptions" className={collapsedNavMenuClasses}>
             <ul className="nav navbar-nav">
-              <li className="active"><a href="/react-alt">Home <span className="sr-only">(current)</span></a></li>
+              <li className="active"><a href="/react-router-alt">Home <span className="sr-only">(current)</span></a></li>
               <li><a href="https://github.com/mikechau/lolvids">GitHub</a></li>
               <li ref="endlessModeToggle" className={endlessModeLiClasses} onClick={this.handleEndlessModeClick}>
                 <a id="endless-mode-action" href="#autoplay">
@@ -74,10 +74,10 @@ var TopNavBar = React.createClass({
                 <li><a href="/jquery">jquery</a></li>
                 <li className="divider"></li>
                 <li><a href="/react">react</a></li>
-                <li className="active"><a href="/react-alt">react-alt</a></li>
+                <li><a href="/react-alt">react-alt</a></li>
                 <li className="divider"></li>
                 <li><a href="/react-router">react-router</a></li>
-                <li><a href="/react-router-alt">react-router-alt</a></li>
+                <li className="active"><a href="/react-router-alt">react-router-alt</a></li>
               </Dropdown>
             </ul>
           </div>

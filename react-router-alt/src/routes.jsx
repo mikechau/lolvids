@@ -22,8 +22,10 @@ var routes = (
   <Route handler={Application} path="/?">
     <DefaultRoute handler={VideosContainer} />
 
-    <Route path="videos/?">
-      <Route path=":videoId/?">
+    <Route name="videos" path="videos/?">
+      <DefaultRoute handler={VideosContainer} />
+
+      <Route name="video" path=":videoId/?">
         <DefaultRoute handler={VideosContainer} />
       </Route>
     </Route>
